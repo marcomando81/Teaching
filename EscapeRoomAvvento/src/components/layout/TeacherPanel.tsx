@@ -96,26 +96,28 @@ export function TeacherPanel({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-slate-950/90 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-[#0F1B35]/80 backdrop-blur-[2px] flex items-center justify-center p-4"
         >
           <motion.div
             initial={{ scale: 0.92, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.92, opacity: 0 }}
-            className="w-full max-w-4xl max-h-[92vh] rounded-3xl bg-slate-900 border-4 border-amber-400 shadow-2xl p-6 flex flex-col gap-5 overflow-hidden"
+            className="storybook-panel w-full max-w-4xl max-h-[92vh] rounded-[30px] p-6 flex flex-col gap-5 overflow-hidden"
           >
-            {/* Header */}
-            <div className="flex items-center justify-between gap-4 border-b-2 border-amber-400/40 pb-3">
+            {/* Header Registro della Maestra */}
+            <div className="flex items-center justify-between gap-4 border-b-2 border-[#D4B27D] pb-3">
               <div className="flex items-center gap-3 flex-wrap">
-                <KeyRound className="w-8 h-8 text-amber-300" />
-                <h2 className="text-2xl md:text-3xl font-extrabold text-amber-300">
-                  Pannello Maestra
+                <div className="w-11 h-11 rounded-2xl bg-[#FFD859] border-[3px] border-[#3A2314] flex items-center justify-center shadow-[0_3px_0_#3A2314]">
+                  <KeyRound className="w-6 h-6 text-[#3A2314]" />
+                </div>
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-[#2B190E]">
+                  Registro della Maestra
                 </h2>
                 <span
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold border ${
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-extrabold border-2 ${
                     offlineReady
-                      ? 'bg-emerald-950/90 border-emerald-400 text-emerald-200'
-                      : 'bg-slate-800 border-amber-400/50 text-amber-100'
+                      ? 'bg-[#DCFCE7] border-[#22A85A] text-[#14532D]'
+                      : 'bg-[#F8ECCF] border-[#C9A66B] text-[#63422B]'
                   }`}
                 >
                   <WifiOff className="w-4 h-4" />
@@ -125,7 +127,7 @@ export function TeacherPanel({
               <button
                 type="button"
                 onClick={handleClose}
-                className="min-h-14 min-w-14 px-5 rounded-2xl bg-slate-800 border-2 border-amber-400/80 text-white font-bold text-xl flex items-center gap-2 active:scale-95 cursor-pointer"
+                className="btn-3d btn-3d-cream min-h-14 min-w-14 px-5 rounded-2xl font-bold text-xl flex items-center gap-2 cursor-pointer"
               >
                 <X className="w-6 h-6" />
                 Chiudi
@@ -135,7 +137,7 @@ export function TeacherPanel({
             {!isUnlocked ? (
               /* Tastierino PIN touch (zero <input> nativi) */
               <div className="flex-1 flex flex-col items-center justify-center gap-5 py-2">
-                <p className="text-2xl font-bold text-amber-50">
+                <p className="text-2xl font-extrabold text-[#2B190E]">
                   Inserisci il PIN Maestra (4 cifre)
                 </p>
 
@@ -143,10 +145,10 @@ export function TeacherPanel({
                   {[0, 1, 2, 3].map((idx) => (
                     <div
                       key={idx}
-                      className={`w-16 h-16 rounded-2xl border-4 flex items-center justify-center text-3xl font-black ${
+                      className={`w-16 h-16 rounded-2xl border-[3px] flex items-center justify-center text-3xl font-black shadow-inner ${
                         pinError
-                          ? 'border-rose-400 bg-rose-950/60 text-rose-200'
-                          : 'border-amber-400 bg-slate-950 text-amber-300'
+                          ? 'border-[#E04248] bg-[#FFE4E6] text-[#9F1239]'
+                          : 'border-[#3A2314] bg-white text-[#3A2314]'
                       }`}
                     >
                       {pinBuffer[idx] ? '●' : ''}
@@ -155,7 +157,7 @@ export function TeacherPanel({
                 </div>
 
                 {pinError && (
-                  <p className="text-xl font-bold text-rose-300">
+                  <p className="text-xl font-extrabold text-[#B91C1C]">
                     PIN errato. Riprova!
                   </p>
                 )}
@@ -166,7 +168,7 @@ export function TeacherPanel({
                       key={d}
                       type="button"
                       onClick={() => handlePinDigit(d)}
-                      className="min-h-14 rounded-2xl bg-slate-800 border-2 border-amber-400/70 text-white font-black text-2xl active:scale-95 cursor-pointer"
+                      className="btn-3d btn-3d-cream min-h-14 rounded-2xl font-bold text-2xl cursor-pointer"
                     >
                       {d}
                     </button>
@@ -178,14 +180,14 @@ export function TeacherPanel({
                       setPinBuffer('');
                       setPinError(false);
                     }}
-                    className="min-h-14 rounded-2xl bg-slate-800 border-2 border-rose-400/70 text-rose-200 font-bold text-lg active:scale-95 cursor-pointer"
+                    className="btn-3d btn-3d-berry min-h-14 rounded-2xl font-bold text-xl cursor-pointer"
                   >
                     C
                   </button>
                   <button
                     type="button"
                     onClick={() => handlePinDigit('0')}
-                    className="min-h-14 rounded-2xl bg-slate-800 border-2 border-amber-400/70 text-white font-black text-2xl active:scale-95 cursor-pointer"
+                    className="btn-3d btn-3d-cream min-h-14 rounded-2xl font-bold text-2xl cursor-pointer"
                   >
                     0
                   </button>
@@ -195,7 +197,7 @@ export function TeacherPanel({
                       playClick();
                       setPinBuffer((prev) => prev.slice(0, -1));
                     }}
-                    className="min-h-14 rounded-2xl bg-slate-800 border-2 border-amber-400/70 text-amber-200 flex items-center justify-center active:scale-95 cursor-pointer"
+                    className="btn-3d btn-3d-gold min-h-14 rounded-2xl flex items-center justify-center cursor-pointer"
                     aria-label="Cancella cifra"
                   >
                     <Delete className="w-7 h-7" />
@@ -204,9 +206,9 @@ export function TeacherPanel({
               </div>
             ) : (
               /* Controlli Maestra sbloccati */
-              <div className="flex-1 overflow-y-auto space-y-5 pr-1">
+              <div className="flex-1 overflow-y-auto space-y-4 pr-1">
                 {statusMessage && (
-                  <div className="rounded-2xl bg-emerald-950/90 border-2 border-emerald-400 px-5 py-3 text-xl font-bold text-emerald-200 flex items-center gap-3">
+                  <div className="rounded-2xl bg-[#DCFCE7] border-2 border-[#22A85A] px-5 py-3 text-xl font-extrabold text-[#14532D] flex items-center gap-3">
                     <CheckCircle2 className="w-6 h-6 shrink-0" />
                     <span>{statusMessage}</span>
                   </div>
@@ -214,17 +216,20 @@ export function TeacherPanel({
 
                 {/* Soluzione stazione corrente + Ponte Fisico */}
                 {(currentStationTitle || currentSolutionSummary || physicalBridgeNote) && (
-                  <div className="rounded-2xl bg-slate-950 border-2 border-amber-400/70 p-4 space-y-2">
-                    <h3 className="text-xl font-extrabold text-amber-300">
-                      Stazione Corrente: {currentStationTitle ?? '—'}
+                  <div className="storybook-subcard rounded-2xl p-4 space-y-2.5">
+                    <h3 className="font-display text-xl font-bold text-[#63422B]">
+                      Stazione Corrente: <span className="text-[#2B190E]">{currentStationTitle ?? '—'}</span>
                     </h3>
                     {currentSolutionSummary && (
-                      <p className="text-xl font-bold text-white">
-                        Soluzione: <span className="text-emerald-300">{currentSolutionSummary}</span>
+                      <p className="text-xl font-extrabold text-[#2B190E]">
+                        Soluzione:{' '}
+                        <span className="px-2.5 py-0.5 rounded-lg bg-[#DCFCE7] text-[#14532D] border border-[#22A85A]">
+                          {currentSolutionSummary}
+                        </span>
                       </p>
                     )}
                     {physicalBridgeNote && (
-                      <p className="text-lg font-semibold text-amber-100 bg-amber-950/60 border border-amber-400/60 rounded-xl px-4 py-2">
+                      <p className="text-lg font-bold text-[#4A2E1B] bg-[#FFFDF7] border-2 border-[#D4B27D] rounded-xl px-4 py-2">
                         Ponte fisico: {physicalBridgeNote}
                       </p>
                     )}
@@ -236,7 +241,7 @@ export function TeacherPanel({
                           onForceUnlockCurrent();
                           handleClose();
                         }}
-                        className="mt-2 min-h-14 px-6 rounded-xl bg-emerald-500 text-slate-950 font-black text-xl flex items-center gap-2 active:scale-95 cursor-pointer"
+                        className="btn-3d btn-3d-green mt-1 min-h-14 px-6 rounded-2xl font-bold text-xl flex items-center gap-2 cursor-pointer"
                       >
                         <Unlock className="w-6 h-6" />
                         Sblocca Stazione Corrente
@@ -246,9 +251,9 @@ export function TeacherPanel({
                 )}
 
                 {/* Salto diretto a stazione (ricostruisce inventario) */}
-                <div className="rounded-2xl bg-slate-950 border-2 border-amber-400/70 p-4 space-y-3">
+                <div className="storybook-subcard rounded-2xl p-4 space-y-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h3 className="text-xl font-extrabold text-amber-300">
+                    <h3 className="font-display text-xl font-bold text-[#2B190E]">
                       Salta alla Stazione (ricostruisce automaticamente lo zaino)
                     </h3>
                     <button
@@ -257,17 +262,15 @@ export function TeacherPanel({
                         playClick();
                         setTeacherUnlockedAll(!teacherUnlockedAll);
                       }}
-                      className={`min-h-12 px-4 rounded-xl border-2 font-bold text-lg cursor-pointer ${
-                        teacherUnlockedAll
-                          ? 'bg-amber-400 text-slate-950 border-amber-300'
-                          : 'bg-slate-800 text-amber-100 border-amber-400/60'
+                      className={`btn-3d min-h-12 px-4 rounded-xl font-bold text-lg cursor-pointer ${
+                        teacherUnlockedAll ? 'btn-3d-gold' : 'btn-3d-cream'
                       }`}
                     >
                       Anteprima libera: {teacherUnlockedAll ? 'ATTIVA' : 'OFF'}
                     </button>
                   </div>
 
-                  <div className="grid grid-cols-5 sm:grid-cols-7 gap-2">
+                  <div className="grid grid-cols-5 sm:grid-cols-7 gap-2.5">
                     {ALL_STATIONS.map((id) => (
                       <button
                         key={id}
@@ -280,10 +283,8 @@ export function TeacherPanel({
                             `Classe impostata alla Stazione ${id} con inventario ricostruito.`
                           );
                         }}
-                        className={`min-h-14 rounded-xl border-2 font-black text-xl active:scale-95 cursor-pointer ${
-                          highestUnlockedStation === id
-                            ? 'bg-amber-400 text-slate-950 border-white'
-                            : 'bg-slate-800 text-amber-100 border-amber-400/60'
+                        className={`btn-3d min-h-14 rounded-xl font-bold text-xl cursor-pointer ${
+                          highestUnlockedStation === id ? 'btn-3d-gold' : 'btn-3d-cream'
                         }`}
                       >
                         S{id}
@@ -293,12 +294,12 @@ export function TeacherPanel({
                 </div>
 
                 {/* Codice di ripresa compatto */}
-                <div className="rounded-2xl bg-slate-950 border-2 border-amber-400/70 p-4 flex flex-wrap items-center justify-between gap-4">
+                <div className="storybook-subcard rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4">
                   <div>
-                    <h3 className="text-xl font-extrabold text-amber-300">
+                    <h3 className="font-display text-xl font-bold text-[#63422B]">
                       Codice di Ripresa sul Registro
                     </h3>
-                    <p className="text-2xl font-black tracking-widest text-white mt-1">
+                    <p className="font-display text-2xl font-bold tracking-widest text-[#2B190E] mt-1">
                       {saveCode}
                     </p>
                   </div>
@@ -310,11 +311,11 @@ export function TeacherPanel({
                         playClick();
                         setImportStationNum((prev) => (prev > 1 ? ((prev - 1) as StationId) : 13));
                       }}
-                      className="min-h-14 min-w-14 rounded-xl bg-slate-800 border-2 border-amber-400/70 text-white font-black text-2xl cursor-pointer"
+                      className="btn-3d btn-3d-cream min-h-14 min-w-14 rounded-xl font-bold text-2xl cursor-pointer"
                     >
                       -
                     </button>
-                    <span className="px-3 text-xl font-black text-amber-200">
+                    <span className="px-3 py-2 rounded-xl bg-white border-2 border-[#C9A66B] font-display text-xl font-bold text-[#2B190E]">
                       CL5-S{String(importStationNum).padStart(2, '0')}-OK
                     </span>
                     <button
@@ -323,7 +324,7 @@ export function TeacherPanel({
                         playClick();
                         setImportStationNum((prev) => (prev < 13 ? ((prev + 1) as StationId) : 1));
                       }}
-                      className="min-h-14 min-w-14 rounded-xl bg-slate-800 border-2 border-amber-400/70 text-white font-black text-2xl cursor-pointer"
+                      className="btn-3d btn-3d-cream min-h-14 min-w-14 rounded-xl font-bold text-2xl cursor-pointer"
                     >
                       +
                     </button>
@@ -336,7 +337,7 @@ export function TeacherPanel({
                           setStatusMessage(`Ripristinato codice ${code}.`);
                         }
                       }}
-                      className="min-h-14 px-5 rounded-xl bg-sky-500 text-slate-950 font-black text-lg cursor-pointer"
+                      className="btn-3d btn-3d-sky min-h-14 px-5 rounded-xl font-bold text-lg cursor-pointer"
                     >
                       Applica
                     </button>
@@ -344,10 +345,10 @@ export function TeacherPanel({
                 </div>
 
                 {/* Reset completo con doppia conferma */}
-                <div className="rounded-2xl bg-rose-950/50 border-2 border-rose-400/80 p-4 flex flex-wrap items-center justify-between gap-4">
-                  <div className="flex items-center gap-3 text-rose-100">
-                    <ShieldAlert className="w-7 h-7 text-rose-300 shrink-0" />
-                    <span className="text-xl font-bold">
+                <div className="rounded-2xl bg-[#FFF1F2] border-2 border-[#E04248] p-4 flex flex-wrap items-center justify-between gap-4">
+                  <div className="flex items-center gap-3 text-[#881337]">
+                    <ShieldAlert className="w-7 h-7 text-[#E04248] shrink-0" />
+                    <span className="text-xl font-extrabold">
                       {confirmReset
                         ? 'Sei sicura? Cancella tutti i progressi della classe!'
                         : 'Reset completo della partita'}
@@ -361,7 +362,7 @@ export function TeacherPanel({
                         playClick();
                         setConfirmReset(true);
                       }}
-                      className="min-h-14 px-6 rounded-xl bg-rose-600 text-white font-black text-xl flex items-center gap-2 cursor-pointer"
+                      className="btn-3d btn-3d-berry min-h-14 px-6 rounded-xl font-bold text-xl flex items-center gap-2 cursor-pointer"
                     >
                       <RotateCcw className="w-6 h-6" />
                       Reset Partita
@@ -374,7 +375,7 @@ export function TeacherPanel({
                           playClick();
                           setConfirmReset(false);
                         }}
-                        className="min-h-14 px-5 rounded-xl bg-slate-800 text-white font-bold text-xl cursor-pointer"
+                        className="btn-3d btn-3d-cream min-h-14 px-5 rounded-xl font-bold text-xl cursor-pointer"
                       >
                         Annulla
                       </button>
@@ -385,7 +386,7 @@ export function TeacherPanel({
                           resetGame();
                           handleClose();
                         }}
-                        className="min-h-14 px-6 rounded-xl bg-rose-500 text-white font-black text-xl cursor-pointer"
+                        className="btn-3d btn-3d-berry min-h-14 px-6 rounded-xl font-bold text-xl cursor-pointer"
                       >
                         Conferma Reset
                       </button>

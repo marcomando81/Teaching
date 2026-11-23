@@ -63,29 +63,31 @@ function PathTargetBoard({
   return (
     <div className="relative z-20 w-full h-full flex flex-col justify-between p-2.5 md:p-4 gap-2.5 max-w-6xl mx-auto">
       {/* Intestazione */}
-      <div className="rounded-2xl bg-slate-900/92 border-2 border-amber-400/90 px-4 py-2 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-lg md:text-2xl font-black text-amber-300">{config.promptTitle}</h2>
+      <div className="storybook-panel rounded-2xl px-4 py-2 flex flex-wrap items-center justify-between gap-2">
+        <h2 className="font-display text-lg md:text-2xl font-bold text-[#3A2314]">
+          {config.promptTitle}
+        </h2>
         <button
           type="button"
           onClick={() => {
             playClick();
             setStepsModalOpen(true);
           }}
-          className="min-h-12 px-4 rounded-xl bg-amber-400 text-slate-950 font-black text-lg flex items-center gap-2 cursor-pointer"
+          className="btn-3d btn-3d-gold min-h-12 px-4 rounded-xl font-bold text-lg flex items-center gap-2 cursor-pointer"
         >
           <BookOpen className="w-5 h-5" />
           <span>Ingrandisci Passi</span>
         </button>
       </div>
 
-      {/* Griglia 5x5 + Bussola e passi */}
+      {/* Griglia 5x5 su pergamena + Bussola e passi */}
       <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-3 items-center">
         {/* Griglia */}
         <div
           style={{ touchAction: 'none' }}
           className="lg:col-span-7 flex items-center justify-center h-full"
         >
-          <div className="rounded-2xl bg-slate-900/92 border-2 border-amber-400/80 p-3">
+          <div className="storybook-panel rounded-3xl p-3">
             {/* Intestazioni colonne */}
             <div
               className="grid gap-1.5 mb-1.5"
@@ -97,7 +99,7 @@ function PathTargetBoard({
               {config.colLabels.map((col) => (
                 <div
                   key={col}
-                  className="text-center font-black text-xl text-amber-300"
+                  className="text-center font-display font-bold text-xl text-[#63422B]"
                 >
                   {col}
                 </div>
@@ -114,7 +116,9 @@ function PathTargetBoard({
                     gridTemplateColumns: `36px repeat(${config.cols}, minmax(48px, 64px))`,
                   }}
                 >
-                  <div className="text-center font-black text-xl text-amber-300">{row}</div>
+                  <div className="text-center font-display font-bold text-xl text-[#63422B]">
+                    {row}
+                  </div>
                   {config.colLabels.map((col) => {
                     const cellId = `${col}${row}`;
                     const isStart = cellId === config.startCell;
@@ -126,21 +130,21 @@ function PathTargetBoard({
                         key={cellId}
                         type="button"
                         onClick={() => handleCellTap(cellId)}
-                        className={`h-12 md:h-14 rounded-xl border-2 font-black text-lg flex flex-col items-center justify-center relative active:scale-95 transition-transform cursor-pointer ${
+                        className={`h-12 md:h-13 rounded-xl border-[3px] font-display font-bold text-lg flex flex-col items-center justify-center relative active:scale-95 transition-transform cursor-pointer ${
                           isSelected
-                            ? 'bg-emerald-400 text-slate-950 border-white ring-2 ring-emerald-200'
+                            ? 'bg-[#4FE08A] text-[#0D351C] border-[#14532D] ring-2 ring-[#8EF0B3] shadow-[0_3px_0_#14532D]'
                             : isStart
-                            ? 'bg-amber-400/25 text-amber-200 border-amber-400'
+                            ? 'bg-[#FFD859] text-[#3A2314] border-[#3A2314] shadow-[0_3px_0_#9A5B0A]'
                             : isMarked
-                            ? 'bg-sky-500/35 text-sky-100 border-sky-400'
-                            : 'bg-slate-950/90 text-amber-100/80 border-slate-700'
+                            ? 'bg-[#74D4FF] text-[#0A2E47] border-[#0E6091] shadow-[0_3px_0_#0E6091]'
+                            : 'bg-[#FFFDF7] text-[#63422B] border-[#D4B27D] hover:bg-[#FFF5D9]'
                         }`}
                         aria-label={`Cella ${cellId}`}
                       >
                         {isSelected ? (
                           <MapPin className="w-6 h-6" />
                         ) : isStart ? (
-                          <Flag className="w-5 h-5 text-amber-300" />
+                          <Flag className="w-5 h-5" />
                         ) : (
                           <span>{cellId}</span>
                         )}
@@ -153,40 +157,48 @@ function PathTargetBoard({
           </div>
         </div>
 
-        {/* Bussola + Elenco passi */}
-        <div className="lg:col-span-5 h-full flex flex-col justify-between gap-2.5">
+        {/* Bussola illustrata + Elenco passi su taccuino */}
+        <div className="lg:col-span-5 h-full flex flex-col justify-between gap-2.5 min-h-0">
           {/* Rosa dei venti N/S/E/O */}
-          <div className="rounded-2xl bg-slate-900/92 border-2 border-amber-400/80 p-3 flex items-center justify-around">
-            <div className="relative w-24 h-24 rounded-full bg-slate-950 border-2 border-amber-400 flex items-center justify-center">
-              <Compass className="w-8 h-8 text-amber-300" />
-              <span className="absolute top-1 left-1/2 -translate-x-1/2 text-base font-black text-emerald-300">
+          <div className="storybook-panel rounded-3xl p-3 flex items-center justify-around">
+            <div className="relative w-24 h-24 rounded-full bg-[#FFFDF7] border-[3px] border-[#3A2314] ring-3 ring-[#FFD859] flex items-center justify-center shadow-inner">
+              <Compass className="w-8 h-8 text-[#B47028]" />
+              <span className="absolute top-0.5 left-1/2 -translate-x-1/2 font-display text-base font-bold text-[#E04248]">
                 N
               </span>
-              <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-base font-black text-amber-200">
+              <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 font-display text-base font-bold text-[#3A2314]">
                 S
               </span>
-              <span className="absolute left-2 top-1/2 -translate-y-1/2 text-base font-black text-amber-200">
+              <span className="absolute left-2 top-1/2 -translate-y-1/2 font-display text-base font-bold text-[#3A2314]">
                 O
               </span>
-              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-base font-black text-amber-200">
+              <span className="absolute right-2 top-1/2 -translate-y-1/2 font-display text-base font-bold text-[#3A2314]">
                 E
               </span>
             </div>
-            <div className="text-left space-y-1">
-              <p className="text-lg font-extrabold text-amber-300">
-                Partenza: <span className="text-white">{config.startCell}</span>
+            <div className="text-left space-y-1.5">
+              <p className="text-lg font-extrabold text-[#63422B]">
+                Partenza:{' '}
+                <span className="px-2.5 py-0.5 rounded-lg bg-[#FFD859] border-2 border-[#3A2314] font-display text-[#3A2314]">
+                  {config.startCell}
+                </span>
               </p>
-              <p className="text-lg font-extrabold text-emerald-300">
-                Arrivo scelto: <span className="text-white">{selectedCell ?? '—'}</span>
+              <p className="text-lg font-extrabold text-[#63422B]">
+                Arrivo:{' '}
+                <span className="px-2.5 py-0.5 rounded-lg bg-[#DCFCE7] border-2 border-[#1F8B4C] font-display text-[#14532D]">
+                  {selectedCell ?? '—'}
+                </span>
               </p>
             </div>
           </div>
 
           {/* Lista compatta passi */}
-          <ol className="flex-1 overflow-y-auto rounded-2xl bg-slate-900/92 border-2 border-amber-400/70 p-3 space-y-1.5 text-base md:text-lg font-bold text-amber-50">
+          <ol className="storybook-panel flex-1 min-h-0 overflow-y-auto rounded-3xl p-3 space-y-1.5 text-base md:text-lg font-extrabold text-[#2B190E]">
             {config.steps.map((step, idx) => (
               <li key={idx} className="flex items-start gap-2">
-                <span className="text-amber-300 font-black">{idx + 1}.</span>
+                <span className="w-6 h-6 rounded-full bg-[#FFD859] border-2 border-[#3A2314] font-display text-sm font-bold text-[#3A2314] flex items-center justify-center shrink-0 mt-0.5">
+                  {idx + 1}
+                </span>
                 <span>{step}</span>
               </li>
             ))}
@@ -202,10 +214,8 @@ function PathTargetBoard({
             playClick();
             setMarkerMode((prev) => !prev);
           }}
-          className={`min-h-14 px-5 rounded-2xl border-2 font-black text-lg cursor-pointer ${
-            markerMode
-              ? 'bg-sky-400 text-slate-950 border-white'
-              : 'bg-slate-900 text-amber-100 border-amber-400/70'
+          className={`btn-3d min-h-14 px-5 rounded-2xl font-bold text-lg cursor-pointer ${
+            markerMode ? 'btn-3d-sky' : 'btn-3d-cream'
           }`}
         >
           {markerMode ? 'Segnaposto Tappe: ATTIVO' : 'Segna Tappe Intermedie'}
@@ -219,7 +229,7 @@ function PathTargetBoard({
               setSelectedCell(null);
               setMarkers([]);
             }}
-            className="min-h-14 px-5 rounded-2xl bg-slate-800 border-2 border-amber-400/70 text-amber-100 font-bold text-xl flex items-center gap-2 cursor-pointer"
+            className="btn-3d btn-3d-cream min-h-14 px-5 rounded-2xl font-bold text-xl flex items-center gap-2 cursor-pointer"
           >
             <RotateCcw className="w-5 h-5" />
             <span>Azzera</span>
@@ -229,7 +239,7 @@ function PathTargetBoard({
             type="button"
             disabled={!selectedCell}
             onClick={handleConfirm}
-            className="min-h-14 px-8 rounded-2xl bg-emerald-400 text-slate-950 font-black text-xl md:text-2xl flex items-center gap-2 shadow-lg disabled:opacity-45 cursor-pointer"
+            className="btn-3d btn-3d-green min-h-14 px-8 rounded-2xl font-bold text-xl md:text-2xl flex items-center gap-2 cursor-pointer"
           >
             <CheckCircle2 className="w-6 h-6" />
             <span>Conferma</span>
@@ -244,21 +254,21 @@ function PathTargetBoard({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-slate-950/92 flex items-center justify-center p-5"
+            className="fixed inset-0 z-50 bg-[#0F1B35]/78 backdrop-blur-[2px] flex items-center justify-center p-5"
             onClick={() => setStepsModalOpen(false)}
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-4xl max-h-[90vh] rounded-3xl bg-slate-900 border-4 border-amber-400 p-6 md:p-8 flex flex-col gap-4"
+              className="storybook-panel w-full max-w-4xl max-h-[90vh] rounded-[30px] p-6 md:p-8 flex flex-col gap-4"
             >
-              <div className="flex items-center justify-between">
-                <h3 className="text-2xl md:text-3xl font-black text-amber-300">
+              <div className="flex items-center justify-between border-b-2 border-[#D4B27D] pb-3">
+                <h3 className="font-display text-2xl md:text-3xl font-bold text-[#3A2314]">
                   Istruzioni del Percorso
                 </h3>
                 <button
                   type="button"
                   onClick={() => setStepsModalOpen(false)}
-                  className="min-h-14 px-6 rounded-2xl bg-amber-400 text-slate-950 font-black text-xl flex items-center gap-2 cursor-pointer"
+                  className="btn-3d btn-3d-gold min-h-14 px-6 rounded-2xl font-bold text-xl flex items-center gap-2 cursor-pointer"
                 >
                   <X className="w-6 h-6" />
                   <span>Chiudi</span>
@@ -268,9 +278,9 @@ function PathTargetBoard({
                 {config.steps.map((step, idx) => (
                   <li
                     key={idx}
-                    className="rounded-2xl bg-slate-950 border-2 border-amber-400/70 p-3.5 text-2xl font-bold text-amber-50 flex items-center gap-4"
+                    className="storybook-subcard rounded-2xl p-3.5 text-2xl font-extrabold text-[#2B190E] flex items-center gap-4"
                   >
-                    <span className="w-10 h-10 shrink-0 rounded-full bg-amber-400 text-slate-950 font-black flex items-center justify-center">
+                    <span className="w-11 h-11 shrink-0 rounded-full bg-[#FFD859] border-[3px] border-[#3A2314] text-[#3A2314] font-display font-bold flex items-center justify-center shadow-[0_2px_0_#3A2314]">
                       {idx + 1}
                     </span>
                     <span>{step}</span>
@@ -322,10 +332,12 @@ function SymmetryBoard({
   };
 
   return (
-    <div className="relative z-20 w-full h-full flex flex-col justify-between p-3 md:p-5 gap-3 max-w-5xl mx-auto">
-      <div className="rounded-2xl bg-slate-900/92 border-2 border-amber-400/90 px-5 py-2.5 text-center">
-        <h2 className="text-xl md:text-2xl font-black text-amber-300">{config.promptTitle}</h2>
-        <p className="text-lg font-bold text-amber-50">
+    <div className="relative z-20 w-full h-full flex flex-col justify-between p-3 md:p-4 gap-3 max-w-5xl mx-auto">
+      <div className="storybook-panel rounded-2xl px-5 py-2.5 text-center">
+        <h2 className="font-display text-xl md:text-2xl font-bold text-[#3A2314]">
+          {config.promptTitle}
+        </h2>
+        <p className="text-base md:text-lg font-extrabold text-[#63422B]">
           Tocca le caselle sulla metà destra per completare il sigillo a specchio!
         </p>
       </div>
@@ -335,7 +347,7 @@ function SymmetryBoard({
         style={{ touchAction: 'none' }}
         className="flex-1 min-h-0 flex items-center justify-center"
       >
-        <div className="rounded-3xl bg-slate-900/92 border-2 border-amber-400/80 p-4 flex items-center gap-3">
+        <div className="storybook-panel rounded-3xl p-4 flex items-center gap-3.5">
           {/* Metà sinistra (fissa) */}
           <div className="space-y-2">
             {Array.from({ length: config.rows }, (_, rIdx) => {
@@ -348,10 +360,10 @@ function SymmetryBoard({
                     return (
                       <div
                         key={`${col},${row}`}
-                        className={`w-13 h-13 md:w-16 md:h-16 rounded-xl border-2 flex items-center justify-center ${
+                        className={`w-12 h-12 md:w-15 md:h-15 rounded-xl border-[3px] flex items-center justify-center ${
                           isLit
-                            ? 'bg-amber-400 border-amber-100 shadow-[0_0_16px_rgba(251,191,36,0.7)]'
-                            : 'bg-slate-950/90 border-slate-700'
+                            ? 'bg-[#FFD859] border-[#3A2314] shadow-[0_4px_0_#9A5B0A]'
+                            : 'bg-[#F3E5C8] border-[#D4B27D]'
                         }`}
                       />
                     );
@@ -364,7 +376,7 @@ function SymmetryBoard({
           {/* Asse di simmetria dorato verticale */}
           <div
             aria-hidden="true"
-            className="w-2 self-stretch rounded-full bg-gradient-to-b from-amber-200 via-amber-400 to-amber-200 shadow-[0_0_18px_rgba(251,191,36,0.9)]"
+            className="w-3 self-stretch rounded-full bg-gradient-to-b from-[#FFE680] via-[#F5B21B] to-[#FFE680] border-2 border-[#3A2314] shadow-[0_0_16px_rgba(245,178,27,0.75)]"
           />
 
           {/* Metà destra (cliccabile) */}
@@ -382,10 +394,10 @@ function SymmetryBoard({
                         key={key}
                         type="button"
                         onClick={() => toggleRightCell(col, row)}
-                        className={`w-13 h-13 md:w-16 md:h-16 rounded-xl border-2 transition-transform active:scale-95 cursor-pointer ${
+                        className={`w-12 h-12 md:w-15 md:h-15 rounded-xl border-[3px] transition-transform active:scale-95 cursor-pointer ${
                           isLit
-                            ? 'bg-sky-400 border-white shadow-[0_0_16px_rgba(56,189,248,0.8)]'
-                            : 'bg-slate-950/90 border-amber-400/40'
+                            ? 'bg-[#38BDF8] border-[#0C4A6E] shadow-[0_4px_0_#0E6091]'
+                            : 'bg-[#FFFDF7] border-[#C9A66B] hover:bg-[#E0F2FE]'
                         }`}
                         aria-label={`Colonna ${col}, Riga ${row}`}
                       />
@@ -400,7 +412,7 @@ function SymmetryBoard({
 
       {/* Controlli in fascia bassa */}
       <div className="shrink-0 flex flex-wrap items-center justify-between gap-3">
-        <span className="px-4 py-2 rounded-xl bg-slate-900 border-2 border-amber-400/70 text-amber-100 font-black text-xl">
+        <span className="storybook-panel px-4 py-2 rounded-2xl font-display font-bold text-xl text-[#2B190E]">
           Caselle accese: {selectedKeys.length} / {config.solutionCells.length}
         </span>
 
@@ -412,7 +424,7 @@ function SymmetryBoard({
               setSelectedKeys([]);
             }}
             disabled={selectedKeys.length === 0}
-            className="min-h-14 px-5 rounded-2xl bg-slate-800 border-2 border-amber-400/70 text-amber-100 font-bold text-xl flex items-center gap-2 disabled:opacity-50 cursor-pointer"
+            className="btn-3d btn-3d-cream min-h-14 px-5 rounded-2xl font-bold text-xl flex items-center gap-2 cursor-pointer"
           >
             <RotateCcw className="w-5 h-5" />
             <span>Azzera</span>
@@ -422,7 +434,7 @@ function SymmetryBoard({
             type="button"
             onClick={handleConfirm}
             disabled={selectedKeys.length === 0}
-            className="min-h-14 px-8 rounded-2xl bg-emerald-400 text-slate-950 font-black text-xl md:text-2xl flex items-center gap-2 shadow-lg disabled:opacity-45 cursor-pointer"
+            className="btn-3d btn-3d-green min-h-14 px-8 rounded-2xl font-bold text-xl md:text-2xl flex items-center gap-2 cursor-pointer"
           >
             <CheckCircle2 className="w-6 h-6" />
             <span>Conferma Sigillo</span>

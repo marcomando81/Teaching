@@ -30,10 +30,10 @@ export function SafeImage({
       <div
         role="img"
         aria-label={alt}
-        className={`flex flex-col items-center justify-center gap-2 bg-[#0F172A] border-2 border-dashed border-amber-400/80 text-amber-100 p-3 text-center select-none ${className} ${fallbackClassName}`}
+        className={`flex flex-col items-center justify-center gap-2 bg-[#F8ECCF] border-2 border-dashed border-[#C9A66B] text-[#63422B] p-3 text-center select-none ${className} ${fallbackClassName}`}
       >
-        <ImageOff className="w-8 h-8 text-amber-300 shrink-0" />
-        <span className="text-base md:text-lg font-bold leading-snug break-words max-w-full">
+        <ImageOff className="w-8 h-8 text-[#B47028] shrink-0" />
+        <span className="text-base md:text-lg font-extrabold leading-snug break-words max-w-full">
           {alt}
         </span>
       </div>

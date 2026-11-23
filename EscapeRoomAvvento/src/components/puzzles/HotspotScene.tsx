@@ -83,14 +83,18 @@ export function HotspotScene({
     }
   };
 
-  const maskValue = `radial-gradient(circle 165px at ${spot.x}% ${spot.y}%, transparent 0%, transparent 62%, rgba(0,0,0,0.96) 100%)`;
+  const maskValue = `radial-gradient(circle 170px at ${spot.x}% ${spot.y}%, transparent 0%, transparent 62%, rgba(0,0,0,0.96) 100%)`;
 
   return (
     <div className="relative z-20 w-full h-full flex flex-col justify-between overflow-hidden">
-      {/* Banner consegna in alto */}
+      {/* Cartiglio consegna in alto */}
       <div className="shrink-0 px-4 pt-3 pb-1 flex items-center justify-center pointer-events-none">
-        <div className="px-5 py-2 rounded-2xl bg-slate-900/92 border-2 border-amber-400/80 text-amber-100 font-extrabold text-xl md:text-2xl shadow-lg flex items-center gap-3 text-center">
-          {isFlashlight && <Flashlight className="w-6 h-6 text-amber-300 shrink-0" />}
+        <div className="storybook-panel px-5 py-2 rounded-2xl font-display font-bold text-lg md:text-2xl text-[#2B190E] flex items-center gap-3 text-center">
+          {isFlashlight && (
+            <span className="w-9 h-9 rounded-xl bg-[#FFD859] border-2 border-[#3A2314] flex items-center justify-center shrink-0">
+              <Flashlight className="w-5 h-5 text-[#3A2314]" />
+            </span>
+          )}
           <span>{config.promptTitle}</span>
         </div>
       </div>
@@ -129,69 +133,80 @@ export function HotspotScene({
               }`}
               aria-label={prop.label}
             >
-              <div
-                className={`relative w-20 h-20 md:w-24 md:h-24 rounded-full border-4 bg-slate-950 overflow-hidden shadow-2xl ${
-                  isSelected
-                    ? 'border-emerald-400 ring-4 ring-emerald-400/50'
-                    : 'border-amber-400'
-                }`}
-              >
-                <SafeImage
-                  src={prop.imagePath}
-                  alt={prop.label}
-                  className="w-full h-full object-cover"
-                />
+              <div className="relative w-20 h-20 md:w-24 md:h-24">
+                <div
+                  className={`w-full h-full rounded-full border-4 bg-[#FFF8E7] overflow-hidden shadow-[0_6px_0_rgba(43,25,14,0.45)] ${
+                    isSelected
+                      ? 'border-[#1F8B4C] ring-4 ring-[#4FE08A]/80 scale-105'
+                      : 'border-[#3A2314] ring-3 ring-[#FFD859]'
+                  }`}
+                >
+                  <SafeImage
+                    src={prop.imagePath}
+                    alt={prop.label}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 {isSelected && (
-                  <span className="absolute -top-1 -right-1 w-9 h-9 rounded-full bg-emerald-400 text-slate-950 border-2 border-slate-950 font-black text-xl flex items-center justify-center shadow">
-                    {isFlashlight ? orderIndex + 1 : <Check className="w-5 h-5" />}
+                  <span className="absolute -top-1 -right-1 w-9 h-9 rounded-full bg-[#22A85A] text-white border-[3px] border-[#3A2314] font-display font-bold text-xl flex items-center justify-center shadow">
+                    {isFlashlight ? orderIndex + 1 : <Check className="w-5 h-5 stroke-[3]" />}
                   </span>
                 )}
               </div>
 
-              <span className="px-2.5 py-0.5 rounded-lg bg-slate-950/90 border border-amber-400/70 text-amber-50 font-bold text-sm md:text-base whitespace-nowrap shadow">
+              <span className="px-3 py-0.5 rounded-xl bg-[#FFF9EC] border-2 border-[#3A2314] text-[#2B190E] font-extrabold text-sm md:text-base whitespace-nowrap shadow-[0_3px_0_rgba(58,35,20,0.4)]">
                 {prop.label}
               </span>
             </button>
           );
         })}
 
-        {/* Maschera torcia radiale (solo modalità flashlight_sequence) */}
+        {/* Alone caldo della lanterna + maschera buio (solo modalità flashlight_sequence) */}
         {isFlashlight && (
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 z-20 bg-slate-950/95"
-            style={{
-              WebkitMaskImage: maskValue,
-              maskImage: maskValue,
-            }}
-          />
+          <>
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 z-15"
+              style={{
+                background: `radial-gradient(circle 185px at ${spot.x}% ${spot.y}%, rgba(255,224,130,0.2) 0%, rgba(255,205,86,0.08) 55%, transparent 72%)`,
+              }}
+            />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 z-20 bg-[#0D162C]/94"
+              style={{
+                WebkitMaskImage: maskValue,
+                maskImage: maskValue,
+              }}
+            />
+          </>
         )}
       </div>
 
       {/* Fascia controlli bassa (ergonomia LIM) */}
-      <div className="shrink-0 px-4 pb-3 pt-2 bg-slate-950/85 border-t-2 border-amber-400/50 flex flex-wrap items-center justify-between gap-3 z-30">
+      <div className="shrink-0 px-4 pb-2.5 pt-2 bg-[#4A2B18]/92 border-t-[3px] border-[#F3B63A] flex flex-wrap items-center justify-between gap-3 z-30">
         <button
           type="button"
           onClick={() => {
             playClick();
             setCluesOpen(true);
           }}
-          className="min-h-14 px-5 rounded-2xl bg-slate-900 border-2 border-amber-400 text-amber-200 font-extrabold text-lg md:text-xl flex items-center gap-2.5 active:scale-95 cursor-pointer"
+          className="btn-3d btn-3d-gold min-h-14 px-5 rounded-2xl font-bold text-lg md:text-xl flex items-center gap-2.5 cursor-pointer"
         >
-          <BookOpen className="w-6 h-6 text-amber-300" />
+          <BookOpen className="w-6 h-6" />
           <span>Leggi Indizi a Schermo Intero</span>
         </button>
 
         <div className="flex items-center gap-3 ml-auto">
-          <span className="px-4 py-2 rounded-xl bg-slate-900 border-2 border-amber-400/60 text-amber-100 font-black text-lg md:text-xl">
-            Selezionati: {selectedIds.length} / {targetCount}
+          <span className="px-4 py-2 rounded-2xl bg-[#FFF9EC] border-[3px] border-[#3A2314] text-[#2B190E] font-display font-bold text-lg md:text-xl shadow-[0_3px_0_#2B170C]">
+            Scelti: {selectedIds.length} / {targetCount}
           </span>
 
           <button
             type="button"
             onClick={handleReset}
             disabled={selectedIds.length === 0}
-            className="min-h-14 px-5 rounded-2xl bg-slate-800 border-2 border-amber-400/70 text-amber-100 font-bold text-lg md:text-xl flex items-center gap-2 disabled:opacity-50 active:scale-95 cursor-pointer"
+            className="btn-3d btn-3d-cream min-h-14 px-5 rounded-2xl font-bold text-lg md:text-xl flex items-center gap-2 cursor-pointer"
           >
             <RotateCcw className="w-5 h-5" />
             <span>Azzera</span>
@@ -201,7 +216,7 @@ export function HotspotScene({
             type="button"
             onClick={handleConfirm}
             disabled={selectedIds.length !== targetCount}
-            className="min-h-14 px-7 rounded-2xl bg-emerald-400 text-slate-950 font-black text-xl md:text-2xl flex items-center gap-2 shadow-lg disabled:opacity-45 disabled:cursor-not-allowed active:scale-95 cursor-pointer"
+            className="btn-3d btn-3d-green min-h-14 px-7 rounded-2xl font-bold text-xl md:text-2xl flex items-center gap-2 cursor-pointer"
           >
             <CheckCircle2 className="w-6 h-6" />
             <span>Conferma</span>
@@ -209,14 +224,14 @@ export function HotspotScene({
         </div>
       </div>
 
-      {/* Modale Indizi a Schermo Intero con font gigante per la classe */}
+      {/* Modale Indizi a Schermo Intero stile pergamena */}
       <AnimatePresence>
         {cluesOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-slate-950/92 flex items-center justify-center p-5 md:p-8"
+            className="fixed inset-0 z-50 bg-[#0F1B35]/78 backdrop-blur-[2px] flex items-center justify-center p-5 md:p-8"
             onClick={() => {
               playClick();
               setCluesOpen(false);
@@ -227,10 +242,10 @@ export function HotspotScene({
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.92, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-4xl max-h-[90vh] rounded-3xl bg-slate-900 border-4 border-amber-400 shadow-2xl p-6 md:p-8 flex flex-col gap-5"
+              className="storybook-panel w-full max-w-4xl max-h-[90vh] rounded-[30px] p-6 md:p-8 flex flex-col gap-5"
             >
-              <div className="flex items-center justify-between gap-4 border-b-2 border-amber-400/40 pb-3">
-                <h3 className="text-2xl md:text-4xl font-black text-amber-300">
+              <div className="flex items-center justify-between gap-4 border-b-2 border-[#D4B27D] pb-3">
+                <h3 className="font-display text-2xl md:text-4xl font-bold text-[#3A2314]">
                   {config.promptTitle}
                 </h3>
                 <button
@@ -239,23 +254,23 @@ export function HotspotScene({
                     playClick();
                     setCluesOpen(false);
                   }}
-                  className="min-h-14 px-6 rounded-2xl bg-amber-400 text-slate-950 font-black text-xl flex items-center gap-2 cursor-pointer"
+                  className="btn-3d btn-3d-gold min-h-14 px-6 rounded-2xl font-bold text-xl flex items-center gap-2 cursor-pointer shrink-0"
                 >
                   <X className="w-6 h-6" />
                   <span>Chiudi</span>
                 </button>
               </div>
 
-              <ol className="flex-1 overflow-y-auto space-y-4 pr-1">
+              <ol className="flex-1 overflow-y-auto space-y-3.5 pr-1">
                 {config.clues.map((clue, idx) => (
                   <li
                     key={idx}
-                    className="rounded-2xl bg-slate-950 border-2 border-amber-400/70 p-4 md:p-5 flex items-start gap-4"
+                    className="storybook-subcard rounded-2xl p-4 md:p-5 flex items-start gap-4"
                   >
-                    <span className="w-12 h-12 shrink-0 rounded-full bg-amber-400 text-slate-950 font-black text-2xl flex items-center justify-center">
+                    <span className="w-12 h-12 shrink-0 rounded-full bg-[#FFD859] border-[3px] border-[#3A2314] text-[#3A2314] font-display font-bold text-2xl flex items-center justify-center shadow-[0_3px_0_#3A2314]">
                       {idx + 1}
                     </span>
-                    <p className="text-2xl md:text-3xl font-bold text-amber-50 leading-snug">
+                    <p className="text-2xl md:text-3xl font-extrabold text-[#2B190E] leading-snug pt-0.5">
                       {clue}
                     </p>
                   </li>

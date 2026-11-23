@@ -23,9 +23,9 @@ export function RewardOverlay({
     }
     playSuccess();
 
-    const colors = ['#F59E0B', '#FDE68A', '#FFFFFF', '#38BDF8'];
+    const colors = ['#FFD859', '#E04248', '#22A85A', '#38BDF8', '#FFFFFF'];
     confetti({
-      particleCount: item.isMasterGear ? 120 : 80,
+      particleCount: item.isMasterGear ? 120 : 85,
       spread: 85,
       origin: { y: 0.55 },
       colors,
@@ -33,30 +33,30 @@ export function RewardOverlay({
   }, [item]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/90 flex items-center justify-center p-6 overflow-hidden">
-      {/* Fascio di luce radiale rotante in CSS */}
+    <div className="fixed inset-0 z-50 bg-[#0F1B35]/80 backdrop-blur-[2px] flex items-center justify-center p-6 overflow-hidden">
+      {/* Fascio di luce dorata radiale rotante */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute w-[680px] h-[680px] rounded-full opacity-25 animate-rotate-rays"
+        className="pointer-events-none absolute w-[720px] h-[720px] rounded-full opacity-35 animate-rotate-rays"
         style={{
           background:
-            'repeating-conic-gradient(from 0deg, #F59E0B 0deg 15deg, transparent 15deg 30deg)',
+            'repeating-conic-gradient(from 0deg, #FFD859 0deg 14deg, transparent 14deg 28deg)',
         }}
       />
 
       <motion.div
-        initial={{ scale: 0.2, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: 'spring', stiffness: 220, damping: 18 }}
-        className="relative z-10 w-full max-w-2xl rounded-3xl bg-slate-900/95 border-4 border-amber-400 shadow-2xl p-7 md:p-9 flex flex-col items-center text-center gap-6"
+        initial={{ scale: 0.35, opacity: 0, rotate: -3 }}
+        animate={{ scale: 1, opacity: 1, rotate: 0 }}
+        transition={{ type: 'spring', stiffness: 230, damping: 18 }}
+        className="storybook-panel relative z-10 w-full max-w-2xl rounded-[32px] p-6 md:p-8 flex flex-col items-center text-center gap-5"
       >
-        <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-amber-400/20 border-2 border-amber-400 text-amber-300 font-black text-xl uppercase tracking-wider">
-          <Sparkles className="w-6 h-6" />
-          <span>{item.isMasterGear ? 'Ingranaggio Maestro Sbloccato!' : 'Oggetto Raccolto!'}</span>
+        <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-[#E04248] border-[3px] border-[#3A2314] text-white font-display font-bold text-lg md:text-xl uppercase tracking-wide shadow-[0_4px_0_#3A2314]">
+          <Sparkles className="w-6 h-6 text-[#FFE169]" />
+          <span>{item.isMasterGear ? 'Ingranaggio Maestro Sbloccato!' : 'Nuovo Tesoro Raccolto!'}</span>
         </div>
 
         <div
-          className={`w-48 h-48 md:w-56 md:h-56 rounded-full border-4 border-amber-400 bg-slate-950 overflow-hidden shadow-2xl flex items-center justify-center ${
+          className={`w-44 h-44 md:w-52 md:h-52 rounded-full border-4 border-[#3A2314] ring-4 ring-[#FFD859] bg-[#2B190E] overflow-hidden shadow-[0_8px_0_rgba(58,35,20,0.3)] flex items-center justify-center ${
             item.isMasterGear ? 'p-4' : ''
           }`}
         >
@@ -67,11 +67,11 @@ export function RewardOverlay({
           />
         </div>
 
-        <div className="space-y-3">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-amber-300">
+        <div className="space-y-3 w-full">
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-[#3A2314]">
             {item.name}
           </h2>
-          <p className="text-2xl md:text-3xl font-bold text-white bg-slate-950/90 border-2 border-amber-400/70 rounded-2xl px-6 py-4 leading-snug">
+          <p className="storybook-subcard text-2xl md:text-3xl font-extrabold text-[#2B190E] rounded-2xl px-6 py-4 leading-snug">
             {item.description}
           </p>
         </div>
@@ -82,7 +82,7 @@ export function RewardOverlay({
             playClick();
             onCollect();
           }}
-          className="min-h-16 md:min-h-20 px-10 rounded-2xl bg-amber-400 text-slate-950 font-black text-2xl flex items-center gap-3 shadow-xl active:scale-95 transition-transform cursor-pointer"
+          className="btn-3d btn-3d-green min-h-16 md:min-h-20 px-10 rounded-2xl font-bold text-2xl flex items-center gap-3 cursor-pointer"
         >
           <Backpack className="w-7 h-7" />
           <span>{buttonLabel}</span>

@@ -1,4 +1,4 @@
-import { CheckCircle2, Crown, Lock, Play } from 'lucide-react';
+import { BookOpen, Clock, Cog, Crown, Lock, Play, Star } from 'lucide-react';
 import { useGameStore } from '../../store/useGameStore';
 import type { ActId, StationId } from '../../types/game';
 import { getStationById } from '../../data/stations';
@@ -12,33 +12,37 @@ export interface TowerMapProps {
 
 interface ActGroup {
   act: ActId;
+  shortLabel: string;
   title: string;
   stations: StationId[];
-  gearId?: string;
-  gearLabel?: string;
+  ribbonClass: string;
+  numberBadgeClass: string;
 }
 
 const ACT_GROUPS: ActGroup[] = [
   {
     act: 1,
-    title: 'Atto 1 — La Stanza del Pendolo',
+    shortLabel: 'Atto 1',
+    title: 'La Stanza del Pendolo',
     stations: [1, 2, 3, 4],
-    gearId: 'gear_bronze',
-    gearLabel: 'Bronzo',
+    ribbonClass: 'bg-gradient-to-r from-[#C26A2B] to-[#E28A37] text-white',
+    numberBadgeClass: 'bg-[#D9772B] text-white',
   },
   {
     act: 2,
-    title: "Atto 2 — L'Officina degli Ingranaggi",
+    shortLabel: 'Atto 2',
+    title: "L'Officina degli Ingranaggi",
     stations: [5, 6, 7, 8],
-    gearId: 'gear_silver',
-    gearLabel: 'Argento',
+    ribbonClass: 'bg-gradient-to-r from-[#236AB9] to-[#3B91E8] text-white',
+    numberBadgeClass: 'bg-[#2574C8] text-white',
   },
   {
     act: 3,
-    title: "Atto 3 — L'Archivio del Tempo",
+    shortLabel: 'Atto 3',
+    title: "L'Archivio del Tempo",
     stations: [9, 10, 11, 12],
-    gearId: 'gear_gold',
-    gearLabel: 'Oro',
+    ribbonClass: 'bg-gradient-to-r from-[#7B3FA0] to-[#9E5BC7] text-white',
+    numberBadgeClass: 'bg-[#8645AD] text-white',
   },
 ];
 
@@ -47,6 +51,12 @@ const MASTER_GEARS = [
   { id: 'gear_silver', label: 'Argento (6)', path: '/assets/gears/gear_silver.png' },
   { id: 'gear_gold', label: 'Oro (9)', path: '/assets/gears/gear_gold.png' },
 ];
+
+function ActIcon({ act }: { act: ActId }) {
+  if (act === 1) return <Clock className="w-5 h-5 shrink-0" />;
+  if (act === 2) return <Cog className="w-5 h-5 shrink-0" />;
+  return <BookOpen className="w-5 h-5 shrink-0" />;
+}
 
 export function TowerMap({ onSelectStation }: TowerMapProps) {
   const highestUnlockedStation = useGameStore((s) => s.highestUnlockedStation);
@@ -61,47 +71,53 @@ export function TowerMap({ onSelectStation }: TowerMapProps) {
   const finaleCompleted = isCompleted(13);
 
   return (
-    <div className="relative w-full h-full overflow-hidden flex flex-col justify-between p-3 md:p-5">
-      {/* Sfondo Torre */}
+    <div className="relative w-full h-full overflow-hidden flex flex-col justify-between p-2.5 md:p-4">
+      {/* Sfondo Torre molto più visibile */}
       <div className="absolute inset-0">
         <SafeImage
           src="/assets/backgrounds/bg_tower_map.webp"
           alt="Mappa della Torre"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-slate-950/75" />
+        <div className="absolute inset-0 bg-[#10203E]/42" />
       </div>
 
       <AmbientParticles variant="snow" count={16} />
 
-      {/* Contenuto Mappa centrato senza scroll */}
-      <div className="relative z-20 flex-1 flex flex-col justify-between gap-3 max-w-6xl w-full mx-auto">
-        {/* Barra Ingranaggi Maestri raccolti + Gran Finale */}
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-slate-900/90 border-2 border-amber-400/80 px-4 py-2.5">
-          <div className="flex items-center gap-4">
-            <span className="text-lg md:text-xl font-extrabold text-amber-300">
+      {/* Contenuto Album/Calendario centrato senza scroll */}
+      <div className="relative z-20 flex-1 min-h-0 flex flex-col justify-between gap-2.5 md:gap-3 max-w-6xl w-full mx-auto">
+        {/* Bacheca Ingranaggi Maestri + Gran Finale */}
+        <div className="storybook-panel shrink-0 rounded-2xl px-3.5 md:px-5 py-2 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-3 md:gap-4 flex-wrap">
+            <span className="font-display text-lg md:text-xl font-bold text-[#3A2314]">
               Ingranaggi Maestri:
             </span>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5">
               {MASTER_GEARS.map((g) => {
                 const owned = inventoryIds.includes(g.id);
                 return (
                   <div
                     key={g.id}
-                    className={`flex items-center gap-2 px-3 py-1 rounded-full border-2 ${
+                    className={`flex items-center gap-2 px-3 py-1 rounded-full border-2 transition-all ${
                       owned
-                        ? 'bg-amber-400/20 border-amber-300 text-amber-100'
-                        : 'bg-slate-950/80 border-slate-700 text-amber-100/60 opacity-60'
+                        ? 'bg-[#FFF3B0] border-[#3A2314] text-[#2B190E] shadow-[0_2px_0_#3A2314]'
+                        : 'bg-[#EFE0BE]/80 border-dashed border-[#B39360] text-[#7D6140]'
                     }`}
                   >
-                    <div className="w-9 h-9 rounded-full bg-slate-950 border border-amber-400/70 overflow-hidden p-0.5">
+                    <div
+                      className={`w-9 h-9 rounded-full overflow-hidden p-0.5 flex items-center justify-center ${
+                        owned
+                          ? 'bg-[#2B190E] border-2 border-[#F5B82E]'
+                          : 'bg-[#E3D0A8] border border-[#B39360] opacity-45 grayscale'
+                      }`}
+                    >
                       <SafeImage
                         src={g.path}
                         alt={g.label}
                         className="w-full h-full object-contain"
                       />
                     </div>
-                    <span className="text-base md:text-lg font-bold hidden sm:inline">
+                    <span className="font-display text-sm md:text-base font-bold hidden sm:inline">
                       {g.label}
                     </span>
                   </div>
@@ -119,37 +135,51 @@ export function TowerMap({ onSelectStation }: TowerMapProps) {
               playClick();
               onSelectStation(13);
             }}
-            className={`min-h-14 px-6 rounded-2xl border-2 font-black text-xl flex items-center gap-2 transition-transform ${
+            className={`btn-3d min-h-12 md:min-h-14 px-5 md:px-6 rounded-2xl font-bold text-lg md:text-xl flex items-center gap-2 ${
               finaleCompleted
-                ? 'bg-emerald-500 text-slate-950 border-emerald-200 cursor-pointer active:scale-95'
+                ? 'btn-3d-green cursor-pointer'
                 : finaleUnlocked
-                ? 'bg-amber-400 text-slate-950 border-white cursor-pointer active:scale-95 shadow-lg'
-                : 'bg-slate-950/90 text-amber-100/60 border-slate-700 cursor-not-allowed'
+                ? 'btn-3d-gold cursor-pointer'
+                : 'bg-[#EAD9B7] text-[#846948] border-[#B39360] cursor-not-allowed'
             }`}
           >
             {finaleCompleted ? (
-              <CheckCircle2 className="w-6 h-6" />
+              <Star className="w-6 h-6 fill-[#FFE169] text-[#14532D]" />
             ) : finaleUnlocked ? (
               <Crown className="w-6 h-6" />
             ) : (
-              <Lock className="w-6 h-6" />
+              <Lock className="w-5 h-5" />
             )}
             <span>Stazione 13 — Gran Finale</span>
           </button>
         </div>
 
-        {/* Griglia dei 3 Atti (12 stazioni) */}
+        {/* Album dei 3 Capitoli (12 caselle stile Calendario dell'Avvento) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 flex-1 min-h-0">
           {ACT_GROUPS.map((group) => (
             <section
               key={group.act}
-              className="rounded-2xl bg-slate-900/90 border-2 border-amber-400/80 p-3 md:p-4 flex flex-col justify-between gap-2.5"
+              className="storybook-panel rounded-3xl overflow-hidden flex flex-col min-h-0"
             >
-              <h2 className="text-lg md:text-xl font-extrabold text-amber-300 border-b border-amber-400/40 pb-1.5 truncate">
-                {group.title}
-              </h2>
+              {/* Testata a nastro del Capitolo */}
+              <div
+                className={`${group.ribbonClass} px-3.5 py-2 border-b-[3px] border-[#3A2314] flex items-center gap-2 shrink-0`}
+              >
+                <span className="w-8 h-8 rounded-xl bg-black/20 border-2 border-white/40 flex items-center justify-center shrink-0">
+                  <ActIcon act={group.act} />
+                </span>
+                <div className="min-w-0 leading-tight">
+                  <span className="block text-xs font-extrabold uppercase tracking-wider text-white/90">
+                    {group.shortLabel}
+                  </span>
+                  <h2 className="font-display text-base md:text-lg font-bold truncate drop-shadow-[0_1px_0_rgba(0,0,0,0.35)]">
+                    {group.title}
+                  </h2>
+                </div>
+              </div>
 
-              <div className="grid grid-cols-2 gap-2.5 flex-1">
+              {/* 4 Caselle Stazione */}
+              <div className="grid grid-cols-2 gap-2.5 p-2.5 md:p-3 flex-1 min-h-0 bg-[#FFF8E8]">
                 {group.stations.map((stationId) => {
                   const unlocked = isUnlocked(stationId);
                   const completed = isCompleted(stationId);
@@ -166,27 +196,50 @@ export function TowerMap({ onSelectStation }: TowerMapProps) {
                         playClick();
                         onSelectStation(stationId);
                       }}
-                      className={`min-h-16 rounded-2xl border-2 p-2.5 flex flex-col items-center justify-center text-center gap-1 transition-transform ${
+                      className={`relative rounded-2xl p-2 flex flex-col items-center justify-center text-center gap-1.5 transition-all ${
                         completed
-                          ? 'bg-emerald-950/90 border-emerald-400 text-emerald-100 cursor-pointer active:scale-95'
+                          ? 'bg-[#DCFCE7] border-[3px] border-[#1F8B4C] text-[#144729] shadow-[0_4px_0_#1F8B4C] active:translate-y-0.5 cursor-pointer'
                           : isCurrent
-                          ? 'bg-amber-400 text-slate-950 border-white shadow-lg cursor-pointer active:scale-95'
+                          ? 'bg-gradient-to-b from-[#FFF394] to-[#FFD23F] border-[3px] border-[#3A2314] text-[#2B190E] shadow-[0_5px_0_#9A5B0A] active:translate-y-0.5 cursor-pointer'
                           : unlocked
-                          ? 'bg-slate-800 border-amber-400/80 text-amber-50 cursor-pointer active:scale-95'
-                          : 'bg-slate-950/90 border-slate-700 text-amber-100/50 cursor-not-allowed'
+                          ? 'bg-[#FFFDF7] border-[3px] border-[#3A2314] text-[#2B190E] shadow-[0_4px_0_#B38E58] active:translate-y-0.5 cursor-pointer'
+                          : 'bg-[#F2E5C9]/80 border-2 border-dashed border-[#C0A272] text-[#846948] cursor-not-allowed'
                       }`}
                     >
-                      <div className="flex items-center gap-1.5 font-black text-xl">
-                        {completed ? (
-                          <CheckCircle2 className="w-5 h-5 text-emerald-300 shrink-0" />
-                        ) : unlocked ? (
-                          <Play className="w-5 h-5 shrink-0" />
-                        ) : (
-                          <Lock className="w-5 h-5 shrink-0" />
-                        )}
-                        <span>Stazione {stationId}</span>
+                      {/* Badge "Oggi!" pulsante per la tappa attiva */}
+                      {isCurrent && (
+                        <span className="animate-gentle-bob absolute -top-2.5 -right-2 px-2.5 py-0.5 rounded-full bg-[#E04248] text-white border-2 border-[#3A2314] font-display font-bold text-xs uppercase tracking-wide shadow-[0_2px_0_#3A2314]">
+                          Oggi!
+                        </span>
+                      )}
+
+                      {/* Timbro Stella per stazione completata */}
+                      {completed && (
+                        <span className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-[#FFD859] border-2 border-[#1F8B4C] flex items-center justify-center shadow">
+                          <Star className="w-5 h-5 text-[#1F8B4C] fill-[#1F8B4C]" />
+                        </span>
+                      )}
+
+                      {/* Numero grande stile casella calendario */}
+                      <div className="flex items-center gap-1.5">
+                        <span
+                          className={`w-9 h-9 md:w-10 md:h-10 rounded-xl border-2 font-display font-bold text-xl md:text-2xl flex items-center justify-center shrink-0 ${
+                            completed
+                              ? 'bg-[#22A85A] border-[#14532D] text-white'
+                              : isCurrent
+                              ? 'bg-[#3A2314] border-[#3A2314] text-[#FFE169]'
+                              : unlocked
+                              ? `${group.numberBadgeClass} border-[#3A2314]`
+                              : 'bg-[#E5D3AF] border-[#B39360] text-[#7D6140]'
+                          }`}
+                        >
+                          {stationId}
+                        </span>
+                        {isCurrent && <Play className="w-5 h-5 fill-[#3A2314] text-[#3A2314] shrink-0" />}
+                        {!unlocked && <Lock className="w-5 h-5 text-[#8D704B] shrink-0" />}
                       </div>
-                      <span className="text-sm font-bold leading-tight line-clamp-2">
+
+                      <span className="text-xs sm:text-sm font-extrabold leading-tight line-clamp-2 px-0.5">
                         {stationDef ? stationDef.title : `Enigma ${stationId}`}
                       </span>
                     </button>

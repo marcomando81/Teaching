@@ -73,7 +73,7 @@ export default function App() {
 
   const handlePuzzleMistake = useCallback((customFeedback?: string) => {
     playError();
-    setMistakeFeedback(customFeedback ?? 'Non è la combinazione giusta! Riprova.');
+    setMistakeFeedback(customFeedback ?? 'Quasi! Non è la combinazione giusta, riprova!');
     window.setTimeout(() => {
       setMistakeFeedback(null);
     }, 3200);
@@ -140,7 +140,7 @@ export default function App() {
                         alt={activeStation.actName}
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute inset-0 bg-slate-950/60" />
+                      <div className="absolute inset-0 bg-[#10203E]/38" />
                     </div>
 
                     <PuzzleHost
@@ -149,9 +149,13 @@ export default function App() {
                       onMistake={handlePuzzleMistake}
                     />
 
+                    {/* Fumetto feedback incoraggiante per errore */}
                     {mistakeFeedback && (
-                      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-40 px-6 py-3 rounded-2xl bg-rose-900/95 border-2 border-rose-300 text-white font-extrabold text-xl shadow-2xl">
-                        {mistakeFeedback}
+                      <div className="animate-soft-wiggle absolute top-3 left-1/2 -translate-x-1/2 z-40 max-w-2xl px-6 py-3 rounded-2xl bg-[#FFF3F0] border-[3px] border-[#D94246] text-[#7A1B1E] font-extrabold text-lg md:text-xl shadow-[0_6px_0_rgba(160,34,38,0.4)] flex items-center gap-3">
+                        <span className="w-9 h-9 rounded-full bg-[#E04248] text-white border-2 border-[#3A2314] flex items-center justify-center shrink-0">
+                          <Lightbulb className="w-5 h-5" />
+                        </span>
+                        <span>{mistakeFeedback}</span>
                       </div>
                     )}
                   </div>
@@ -174,16 +178,18 @@ export default function App() {
               </div>
             ) : (
               <div className="w-full h-full flex flex-col items-center justify-center gap-4 p-8 text-center">
-                <h2 className="text-3xl font-extrabold text-amber-300">
-                  Stazione {activeStationId} in arrivo nel Task 5
-                </h2>
-                <button
-                  type="button"
-                  onClick={handleOpenMap}
-                  className="min-h-16 px-8 rounded-2xl bg-amber-400 text-slate-950 font-black text-2xl cursor-pointer"
-                >
-                  Torna alla Mappa
-                </button>
+                <div className="storybook-panel rounded-3xl p-8 space-y-5 max-w-xl">
+                  <h2 className="font-display text-3xl font-bold text-[#3A2314]">
+                    Stazione {activeStationId} in preparazione
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={handleOpenMap}
+                    className="btn-3d btn-3d-gold min-h-16 px-8 rounded-2xl font-bold text-2xl cursor-pointer"
+                  >
+                    Torna alla Mappa
+                  </button>
+                </div>
               </div>
             )
           }
@@ -197,7 +203,7 @@ export default function App() {
                     playHint();
                     setHintModalOpen(true);
                   }}
-                  className="min-h-16 px-6 rounded-2xl bg-sky-400 text-slate-950 font-black text-xl md:text-2xl flex items-center gap-2 shrink-0 shadow-lg active:scale-95 transition-transform cursor-pointer"
+                  className="btn-3d btn-3d-sky min-h-16 px-6 rounded-2xl font-bold text-xl md:text-2xl flex items-center gap-2.5 shrink-0 cursor-pointer"
                 >
                   <Lightbulb className="w-7 h-7" />
                   <span>Indizio</span>
@@ -240,7 +246,7 @@ export default function App() {
 function GrandFinaleCelebration({ onBackToMap }: { onBackToMap: () => void }) {
   useEffect(() => {
     playTowerChime(12);
-    const colors = ['#F59E0B', '#FDE68A', '#FFFFFF', '#38BDF8'];
+    const colors = ['#FFD859', '#E04248', '#22A85A', '#38BDF8', '#FFFFFF'];
     confetti({ particleCount: 140, spread: 100, origin: { y: 0.5 }, colors });
     const timer = window.setTimeout(() => {
       confetti({ particleCount: 100, spread: 120, origin: { y: 0.35 }, colors });
@@ -249,35 +255,35 @@ function GrandFinaleCelebration({ onBackToMap }: { onBackToMap: () => void }) {
   }, []);
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden select-none bg-[#0B132B] flex flex-col items-center justify-between p-6 md:p-10 text-center">
+    <div className="relative h-screen w-screen overflow-hidden select-none bg-[#162646] flex flex-col items-center justify-between p-6 md:p-10 text-center">
       <div className="absolute inset-0">
         <SafeImage
           src="/assets/backgrounds/bg_finale_clockface.webp"
           alt="Il Quadrante della Torre risvegliato"
           className="w-full h-full object-cover animate-ken-burns"
         />
-        <div className="absolute inset-0 bg-slate-950/75" />
+        <div className="absolute inset-0 bg-[#10203E]/52" />
       </div>
 
       <AmbientParticles variant="snow" count={26} />
 
       {/* 3 Ingranaggi Maestri rotanti insieme */}
       <div className="relative z-20 flex items-center justify-center gap-4 md:gap-8 pt-2">
-        <div className="w-24 h-24 md:w-32 md:h-32">
+        <div className="w-24 h-24 md:w-32 md:h-32 drop-shadow-[0_6px_12px_rgba(0,0,0,0.45)]">
           <SafeImage
             src="/assets/gears/gear_bronze.png"
             alt="Ingranaggio di Bronzo"
             className="w-full h-full object-contain animate-rotate-rays"
           />
         </div>
-        <div className="w-32 h-32 md:w-40 md:h-40">
+        <div className="w-32 h-32 md:w-40 md:h-40 drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)]">
           <SafeImage
             src="/assets/gears/gear_gold.png"
             alt="Ingranaggio d'Oro"
             className="w-full h-full object-contain animate-rotate-rays"
           />
         </div>
-        <div className="w-24 h-24 md:w-32 md:h-32">
+        <div className="w-24 h-24 md:w-32 md:h-32 drop-shadow-[0_6px_12px_rgba(0,0,0,0.45)]">
           <SafeImage
             src="/assets/gears/gear_silver.png"
             alt="Ingranaggio d'Argento"
@@ -286,23 +292,24 @@ function GrandFinaleCelebration({ onBackToMap }: { onBackToMap: () => void }) {
         </div>
       </div>
 
-      {/* Messaggio celebrativo gigante */}
-      <div className="relative z-20 max-w-4xl rounded-3xl bg-slate-900/90 border-4 border-amber-400 p-6 md:p-8 shadow-2xl space-y-4">
-        <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-amber-400/20 border-2 border-amber-400 text-amber-300 font-black text-xl">
-          <Sparkles className="w-6 h-6" />
+      {/* Cartello celebrativo gigante in pergamena e oro */}
+      <div className="storybook-panel relative z-20 max-w-4xl rounded-[34px] p-6 md:p-8 space-y-4">
+        <div className="inline-flex items-center gap-2 px-6 py-1.5 rounded-full bg-[#E04248] border-[3px] border-[#3A2314] text-white font-display font-bold text-xl shadow-[0_3px_0_#3A2314]">
+          <Sparkles className="w-6 h-6 text-[#FFE169]" />
           <span>Il Grande Orologio è Ripartito!</span>
+          <Sparkles className="w-6 h-6 text-[#FFE169]" />
         </div>
 
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-amber-300 leading-tight">
+        <h1 className="font-display text-3xl sm:text-5xl md:text-6xl font-bold text-[#3A2314] leading-tight">
           MISSIONE COMPIUTA, MAESTRI OROLOGIAI!
         </h1>
 
-        <p className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white">
+        <p className="inline-block px-6 py-2 rounded-2xl bg-[#DCFCE7] border-[3px] border-[#1F8B4C] font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#14532D]">
           BUONE VACANZE DI NATALE!
         </p>
       </div>
 
-      {/* Pulsante in fascia bassa */}
+      {/* Pulsante 3D in fascia bassa */}
       <div className="relative z-20 pb-2">
         <button
           type="button"
@@ -310,7 +317,7 @@ function GrandFinaleCelebration({ onBackToMap }: { onBackToMap: () => void }) {
             playClick();
             onBackToMap();
           }}
-          className="min-h-16 px-10 rounded-2xl bg-amber-400 text-slate-950 font-black text-2xl shadow-xl active:scale-95 transition-transform cursor-pointer"
+          className="btn-3d btn-3d-gold min-h-16 px-10 rounded-2xl font-bold text-2xl cursor-pointer"
         >
           Torna alla Mappa della Torre
         </button>

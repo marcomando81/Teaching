@@ -23,10 +23,10 @@ import { playClick, playGearTurn } from '../../audio/soundEngine';
 type LogicConfig = LogicBalanceConfig | LogicMatchingConfig | LogicOrderConfig;
 
 const PAIR_COLORS = [
-  'bg-amber-400 text-slate-950 border-amber-200',
-  'bg-sky-400 text-slate-950 border-sky-200',
-  'bg-emerald-400 text-slate-950 border-emerald-200',
-  'bg-fuchsia-400 text-slate-950 border-fuchsia-200',
+  'bg-[#FFE47A] text-[#2B190E] border-[#3A2314] shadow-[0_4px_0_#9A5B0A]',
+  'bg-[#93E2FF] text-[#0A2E47] border-[#3A2314] shadow-[0_4px_0_#0E6091]',
+  'bg-[#8EF0B3] text-[#0D351C] border-[#3A2314] shadow-[0_4px_0_#146334]',
+  'bg-[#F9B8E8] text-[#4A123E] border-[#3A2314] shadow-[0_4px_0_#86196A]',
 ];
 
 function ToolIcon({ iconName, className = 'w-6 h-6' }: { iconName: string; className?: string }) {
@@ -115,21 +115,45 @@ function BalanceBoard({
     }
   };
 
+  const isBalanced = currentSum === config.targetWeight;
+
   return (
-    <div className="relative z-20 w-full h-full flex flex-col justify-between p-3 md:p-5 gap-3">
-      {/* Targhetta regola */}
-      <div className="max-w-4xl mx-auto w-full rounded-2xl bg-slate-900/92 border-2 border-amber-400/90 px-5 py-3 text-center shadow-lg">
-        <h2 className="text-xl md:text-2xl font-black text-amber-300">{config.promptTitle}</h2>
-        <p className="text-lg md:text-xl font-bold text-amber-50 mt-1">{config.ruleText}</p>
+    <div className="relative z-20 w-full h-full flex flex-col justify-between p-3 md:p-4 gap-2.5">
+      {/* Targhetta regola su pergamena */}
+      <div className="storybook-panel max-w-4xl mx-auto w-full rounded-2xl px-5 py-2.5 text-center">
+        <h2 className="font-display text-xl md:text-2xl font-bold text-[#3A2314]">
+          {config.promptTitle}
+        </h2>
+        <p className="text-base md:text-xl font-extrabold text-[#63422B] mt-0.5">
+          {config.ruleText}
+        </p>
       </div>
 
-      {/* Bilancia SVG al centro */}
+      {/* Bilancia SVG illustrata al centro */}
       <div className="flex-1 min-h-0 flex items-center justify-center">
-        <div className="w-full max-w-2xl h-full max-h-[260px] flex items-center justify-center">
+        <div className="storybook-panel rounded-3xl px-6 py-2 w-full max-w-2xl h-full max-h-[245px] flex items-center justify-center">
           <svg viewBox="0 0 520 220" className="w-full h-full overflow-visible">
-            {/* Base e pilastro */}
-            <rect x="210" y="190" width="100" height="20" rx="8" fill="#B45309" stroke="#FCD34D" strokeWidth="3" />
-            <rect x="250" y="52" width="20" height="140" rx="6" fill="#D97706" stroke="#FCD34D" strokeWidth="3" />
+            {/* Base e pilastro in legno caldo e ottone */}
+            <rect
+              x="196"
+              y="186"
+              width="128"
+              height="24"
+              rx="10"
+              fill="#7D4C2D"
+              stroke="#3A2314"
+              strokeWidth="4"
+            />
+            <rect
+              x="248"
+              y="52"
+              width="24"
+              height="138"
+              rx="8"
+              fill="#E59E28"
+              stroke="#3A2314"
+              strokeWidth="4"
+            />
 
             {/* Braccio oscillante */}
             <g
@@ -139,44 +163,97 @@ function BalanceBoard({
                 transition: 'transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)',
               }}
             >
-              <rect x="70" y="54" width="380" height="16" rx="8" fill="#F59E0B" stroke="#FEF3C7" strokeWidth="3" />
+              <rect
+                x="66"
+                y="53"
+                width="388"
+                height="18"
+                rx="9"
+                fill="#FFD859"
+                stroke="#3A2314"
+                strokeWidth="4"
+              />
 
               {/* Piatto sinistro (fisso 42 kg) */}
-              <line x1="100" y1="70" x2="78" y2="128" stroke="#FCD34D" strokeWidth="3" />
-              <line x1="100" y1="70" x2="122" y2="128" stroke="#FCD34D" strokeWidth="3" />
-              <rect x="52" y="128" width="96" height="16" rx="8" fill="#D97706" stroke="#FEF3C7" strokeWidth="2" />
-              <rect x="64" y="88" width="72" height="40" rx="8" fill="#1E293B" stroke="#F59E0B" strokeWidth="3" />
-              <text x="100" y="115" textAnchor="middle" fill="#FEF3C7" fontSize="22" fontWeight="900">
+              <line x1="100" y1="71" x2="76" y2="128" stroke="#3A2314" strokeWidth="3.5" />
+              <line x1="100" y1="71" x2="124" y2="128" stroke="#3A2314" strokeWidth="3.5" />
+              <rect
+                x="48"
+                y="128"
+                width="104"
+                height="18"
+                rx="9"
+                fill="#D9772B"
+                stroke="#3A2314"
+                strokeWidth="3.5"
+              />
+              <rect
+                x="60"
+                y="84"
+                width="80"
+                height="44"
+                rx="12"
+                fill="#FFF4CC"
+                stroke="#3A2314"
+                strokeWidth="3.5"
+              />
+              <text
+                x="100"
+                y="113"
+                textAnchor="middle"
+                fill="#2B190E"
+                fontSize="23"
+                fontWeight="900"
+                fontFamily="Fredoka, sans-serif"
+              >
                 {config.targetWeight} kg
               </text>
 
               {/* Piatto destro (pesi scelti) */}
-              <line x1="420" y1="70" x2="398" y2="128" stroke="#FCD34D" strokeWidth="3" />
-              <line x1="420" y1="70" x2="442" y2="128" stroke="#FCD34D" strokeWidth="3" />
-              <rect x="372" y="128" width="96" height="16" rx="8" fill="#D97706" stroke="#FEF3C7" strokeWidth="2" />
+              <line x1="420" y1="71" x2="396" y2="128" stroke="#3A2314" strokeWidth="3.5" />
+              <line x1="420" y1="71" x2="444" y2="128" stroke="#3A2314" strokeWidth="3.5" />
               <rect
-                x="376"
-                y="88"
-                width="88"
-                height="40"
-                rx="8"
-                fill={currentSum === config.targetWeight ? '#065F46' : '#0F172A'}
-                stroke={currentSum === config.targetWeight ? '#34D399' : '#38BDF8'}
-                strokeWidth="3"
+                x="368"
+                y="128"
+                width="104"
+                height="18"
+                rx="9"
+                fill="#D9772B"
+                stroke="#3A2314"
+                strokeWidth="3.5"
               />
-              <text x="420" y="115" textAnchor="middle" fill="#FFFFFF" fontSize="22" fontWeight="900">
+              <rect
+                x="372"
+                y="84"
+                width="96"
+                height="44"
+                rx="12"
+                fill={isBalanced ? '#8EF0B3' : '#BAE6FD'}
+                stroke={isBalanced ? '#14532D' : '#3A2314'}
+                strokeWidth="3.5"
+              />
+              <text
+                x="420"
+                y="113"
+                textAnchor="middle"
+                fill={isBalanced ? '#0D351C' : '#0A2E47'}
+                fontSize="23"
+                fontWeight="900"
+                fontFamily="Fredoka, sans-serif"
+              >
                 {currentSum} kg
               </text>
             </g>
 
             {/* Perno centrale */}
-            <circle cx="260" cy="62" r="14" fill="#FEF3C7" stroke="#92400E" strokeWidth="4" />
+            <circle cx="260" cy="62" r="15" fill="#FFF9EC" stroke="#3A2314" strokeWidth="4" />
+            <circle cx="260" cy="62" r="6" fill="#E04248" />
           </svg>
         </div>
       </div>
 
       {/* Fascia bassa: 6 pesi + Azzera + Conferma */}
-      <div className="shrink-0 max-w-5xl mx-auto w-full rounded-2xl bg-slate-900/92 border-2 border-amber-400/80 p-3 md:p-4 flex flex-col gap-3">
+      <div className="storybook-panel shrink-0 max-w-5xl mx-auto w-full rounded-3xl p-3 md:p-4 flex flex-col gap-3">
         <div className="grid grid-cols-3 sm:grid-cols-6 gap-2.5">
           {config.availableWeights.map((w) => {
             const isSelected = selectedWeights.includes(w);
@@ -185,10 +262,8 @@ function BalanceBoard({
                 key={w}
                 type="button"
                 onClick={() => toggleWeight(w)}
-                className={`min-h-16 rounded-2xl border-3 font-black text-2xl transition-transform active:scale-95 cursor-pointer ${
-                  isSelected
-                    ? 'bg-amber-400 text-slate-950 border-white shadow-lg'
-                    : 'bg-slate-800 text-amber-50 border-amber-400/70'
+                className={`btn-3d min-h-14 md:min-h-16 rounded-2xl font-bold text-2xl cursor-pointer ${
+                  isSelected ? 'btn-3d-gold ring-3 ring-[#F5B21B]/60' : 'btn-3d-cream'
                 }`}
               >
                 {w} kg
@@ -198,7 +273,7 @@ function BalanceBoard({
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <span className="text-lg md:text-xl font-bold text-amber-100">
+          <span className="storybook-subcard px-4 py-2 rounded-xl text-base md:text-xl font-extrabold text-[#2B190E]">
             Pesi scelti: {selectedWeights.length} / {config.requiredCount} (
             {selectedWeights.length > 0 ? selectedWeights.join(' + ') : 'nessuno'})
           </span>
@@ -211,7 +286,7 @@ function BalanceBoard({
                 setSelectedWeights([]);
               }}
               disabled={selectedWeights.length === 0}
-              className="min-h-14 px-5 rounded-2xl bg-slate-800 border-2 border-amber-400/70 text-amber-100 font-bold text-xl flex items-center gap-2 disabled:opacity-50 cursor-pointer"
+              className="btn-3d btn-3d-cream min-h-14 px-5 rounded-2xl font-bold text-xl flex items-center gap-2 cursor-pointer"
             >
               <RotateCcw className="w-5 h-5" />
               <span>Azzera</span>
@@ -221,7 +296,7 @@ function BalanceBoard({
               type="button"
               onClick={handleConfirm}
               disabled={selectedWeights.length !== config.requiredCount}
-              className="min-h-14 px-8 rounded-2xl bg-emerald-400 text-slate-950 font-black text-xl md:text-2xl flex items-center gap-2 shadow-lg disabled:opacity-45 cursor-pointer"
+              className="btn-3d btn-3d-green min-h-14 px-8 rounded-2xl font-bold text-xl md:text-2xl flex items-center gap-2 cursor-pointer"
             >
               <CheckCircle2 className="w-6 h-6" />
               <span>Conferma</span>
@@ -251,7 +326,6 @@ function MatchingBoard({
 
     setPairs((prev) => {
       const next = { ...prev };
-      // Rimuovi eventuale precedente associazione allo stesso strumento
       for (const [k, v] of Object.entries(next)) {
         if (v === rightId) delete next[k];
       }
@@ -278,15 +352,17 @@ function MatchingBoard({
 
   return (
     <div className="relative z-20 w-full h-full flex flex-col justify-between p-3 md:p-4 gap-3">
-      <div className="max-w-5xl mx-auto w-full rounded-2xl bg-slate-900/92 border-2 border-amber-400/90 px-5 py-2.5 flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-xl md:text-2xl font-black text-amber-300">{config.promptTitle}</h2>
+      <div className="storybook-panel max-w-5xl mx-auto w-full rounded-2xl px-5 py-2.5 flex flex-wrap items-center justify-between gap-3">
+        <h2 className="font-display text-xl md:text-2xl font-bold text-[#3A2314]">
+          {config.promptTitle}
+        </h2>
         <button
           type="button"
           onClick={() => {
             playClick();
             setCluesOpen(true);
           }}
-          className="min-h-12 px-4 rounded-xl bg-amber-400 text-slate-950 font-black text-lg flex items-center gap-2 cursor-pointer"
+          className="btn-3d btn-3d-gold min-h-12 px-5 rounded-2xl font-bold text-lg flex items-center gap-2 cursor-pointer"
         >
           <BookOpen className="w-5 h-5" />
           <span>Leggi Indizi</span>
@@ -310,17 +386,17 @@ function MatchingBoard({
                   playClick();
                   setActiveLeftId(isSelected ? null : left.id);
                 }}
-                className={`w-full min-h-14 md:min-h-16 px-4 rounded-2xl border-3 font-black text-xl md:text-2xl flex items-center justify-between gap-2 transition-transform active:scale-95 cursor-pointer ${
+                className={`w-full min-h-14 md:min-h-16 px-4 rounded-2xl border-[3px] font-display font-bold text-xl md:text-2xl flex items-center justify-between gap-2 transition-transform active:translate-y-0.5 cursor-pointer ${
                   isSelected
-                    ? 'bg-amber-400 text-slate-950 border-white ring-4 ring-amber-300/60'
+                    ? 'bg-[#FFD859] text-[#3A2314] border-[#3A2314] ring-4 ring-[#FFF3B0] shadow-[0_5px_0_#9A5B0A]'
                     : pairedRightId
                     ? colorClass
-                    : 'bg-slate-900/92 text-amber-50 border-amber-400/70'
+                    : 'btn-3d btn-3d-cream'
                 }`}
               >
                 <span>{left.label}</span>
                 {pairedRightId && (
-                  <span className="px-2.5 py-0.5 rounded-full bg-slate-950/85 text-white text-sm font-bold">
+                  <span className="px-3 py-0.5 rounded-full bg-[#3A2314] text-[#FFE169] text-sm font-bold">
                     #{idx + 1}
                   </span>
                 )}
@@ -343,12 +419,12 @@ function MatchingBoard({
                 key={right.id}
                 type="button"
                 onClick={() => handleRightTap(right.id)}
-                className={`w-full min-h-14 md:min-h-16 px-4 rounded-2xl border-3 font-black text-xl md:text-2xl flex items-center justify-between gap-2 transition-transform active:scale-95 cursor-pointer ${
+                className={`w-full min-h-14 md:min-h-16 px-4 rounded-2xl border-[3px] font-display font-bold text-xl md:text-2xl flex items-center justify-between gap-2 transition-transform active:translate-y-0.5 cursor-pointer ${
                   ownerIdx >= 0
                     ? colorClass
                     : activeLeftId
-                    ? 'bg-slate-800 text-white border-sky-400'
-                    : 'bg-slate-900/92 text-amber-50 border-amber-400/70'
+                    ? 'bg-[#E0F2FE] text-[#0A2E47] border-[#0E6091] shadow-[0_4px_0_#0E6091]'
+                    : 'btn-3d btn-3d-cream'
                 }`}
               >
                 <span className="flex items-center gap-3">
@@ -356,7 +432,7 @@ function MatchingBoard({
                   <span>{right.label}</span>
                 </span>
                 {ownerIdx >= 0 && (
-                  <span className="px-2.5 py-0.5 rounded-full bg-slate-950/85 text-white text-sm font-bold">
+                  <span className="px-3 py-0.5 rounded-full bg-[#3A2314] text-[#FFE169] text-sm font-bold">
                     {config.leftItems[ownerIdx].label}
                   </span>
                 )}
@@ -368,7 +444,7 @@ function MatchingBoard({
 
       {/* Controlli in fascia bassa */}
       <div className="shrink-0 max-w-5xl mx-auto w-full flex flex-wrap items-center justify-between gap-3">
-        <p className="text-lg md:text-xl font-bold text-amber-100 bg-slate-900/90 border border-amber-400/60 rounded-xl px-4 py-2">
+        <p className="storybook-panel rounded-2xl px-4 py-2 text-base md:text-xl font-extrabold text-[#2B190E]">
           {activeLeftId
             ? 'Ora tocca lo strumento da assegnare!'
             : `Tocca un apprendista, poi il suo strumento (${pairedCount}/${totalCount})`}
@@ -383,7 +459,7 @@ function MatchingBoard({
               setActiveLeftId(null);
             }}
             disabled={pairedCount === 0}
-            className="min-h-14 px-5 rounded-2xl bg-slate-800 border-2 border-amber-400/70 text-amber-100 font-bold text-xl flex items-center gap-2 disabled:opacity-50 cursor-pointer"
+            className="btn-3d btn-3d-cream min-h-14 px-5 rounded-2xl font-bold text-xl flex items-center gap-2 cursor-pointer"
           >
             <RotateCcw className="w-5 h-5" />
             <span>Azzera</span>
@@ -393,7 +469,7 @@ function MatchingBoard({
             type="button"
             onClick={handleConfirm}
             disabled={pairedCount !== totalCount}
-            className="min-h-14 px-8 rounded-2xl bg-emerald-400 text-slate-950 font-black text-xl md:text-2xl flex items-center gap-2 shadow-lg disabled:opacity-45 cursor-pointer"
+            className="btn-3d btn-3d-green min-h-14 px-8 rounded-2xl font-bold text-xl md:text-2xl flex items-center gap-2 cursor-pointer"
           >
             <CheckCircle2 className="w-6 h-6" />
             <span>Conferma</span>
@@ -408,21 +484,21 @@ function MatchingBoard({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-slate-950/92 flex items-center justify-center p-5"
+            className="fixed inset-0 z-50 bg-[#0F1B35]/78 backdrop-blur-[2px] flex items-center justify-center p-5"
             onClick={() => setCluesOpen(false)}
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-4xl rounded-3xl bg-slate-900 border-4 border-amber-400 p-6 md:p-8 space-y-5"
+              className="storybook-panel w-full max-w-4xl rounded-[30px] p-6 md:p-8 space-y-5"
             >
-              <div className="flex items-center justify-between">
-                <h3 className="text-2xl md:text-3xl font-black text-amber-300">
+              <div className="flex items-center justify-between border-b-2 border-[#D4B27D] pb-3">
+                <h3 className="font-display text-2xl md:text-3xl font-bold text-[#3A2314]">
                   Indizi degli Apprendisti
                 </h3>
                 <button
                   type="button"
                   onClick={() => setCluesOpen(false)}
-                  className="min-h-14 px-6 rounded-2xl bg-amber-400 text-slate-950 font-black text-xl flex items-center gap-2 cursor-pointer"
+                  className="btn-3d btn-3d-gold min-h-14 px-6 rounded-2xl font-bold text-xl flex items-center gap-2 cursor-pointer"
                 >
                   <X className="w-6 h-6" />
                   <span>Chiudi</span>
@@ -432,12 +508,12 @@ function MatchingBoard({
                 {config.clues.map((c, idx) => (
                   <li
                     key={idx}
-                    className="rounded-2xl bg-slate-950 border-2 border-amber-400/70 p-4 text-xl md:text-2xl font-bold text-amber-50 flex items-start gap-4"
+                    className="storybook-subcard rounded-2xl p-4 text-xl md:text-2xl font-extrabold text-[#2B190E] flex items-start gap-4"
                   >
-                    <span className="w-10 h-10 shrink-0 rounded-full bg-amber-400 text-slate-950 font-black flex items-center justify-center">
+                    <span className="w-10 h-10 shrink-0 rounded-full bg-[#FFD859] border-[3px] border-[#3A2314] text-[#3A2314] font-display font-bold flex items-center justify-center shadow-[0_2px_0_#3A2314]">
                       {idx + 1}
                     </span>
-                    <span>{c}</span>
+                    <span className="pt-0.5">{c}</span>
                   </li>
                 ))}
               </ol>
@@ -490,10 +566,14 @@ function OrderBoard({ config, onSolve, onMistake }: PuzzleEngineProps<LogicOrder
   };
 
   return (
-    <div className="relative z-20 w-full h-full flex flex-col justify-between p-3 md:p-5 gap-3">
-      <div className="max-w-4xl mx-auto w-full rounded-2xl bg-slate-900/92 border-2 border-amber-400/90 px-5 py-3 text-center">
-        <h2 className="text-xl md:text-2xl font-black text-amber-300">{config.promptTitle}</h2>
-        <p className="text-lg md:text-xl font-bold text-amber-50 mt-1">{config.ruleText}</p>
+    <div className="relative z-20 w-full h-full flex flex-col justify-between p-3 md:p-4 gap-3">
+      <div className="storybook-panel max-w-4xl mx-auto w-full rounded-2xl px-5 py-2.5 text-center">
+        <h2 className="font-display text-xl md:text-2xl font-bold text-[#3A2314]">
+          {config.promptTitle}
+        </h2>
+        <p className="text-base md:text-xl font-extrabold text-[#63422B] mt-0.5">
+          {config.ruleText}
+        </p>
       </div>
 
       {/* 4 Tubi Sonori */}
@@ -506,23 +586,23 @@ function OrderBoard({ config, onSolve, onMistake }: PuzzleEngineProps<LogicOrder
           return (
             <div
               key={item.id}
-              className={`rounded-3xl border-4 p-3 md:p-4 flex flex-col justify-between items-center text-center shadow-xl transition-transform ${
-                isSwapSelected
-                  ? 'border-white ring-4 ring-amber-300 scale-[1.02]'
-                  : 'border-amber-400/80'
+              className={`rounded-3xl border-[4px] border-[#3A2314] p-3 md:p-4 flex flex-col justify-between items-center text-center shadow-[0_6px_0_rgba(58,35,20,0.45)] transition-transform ${
+                isSwapSelected ? 'ring-4 ring-[#FFE169] scale-[1.03]' : ''
               } ${item.colorClass}`}
             >
-              <span className="w-10 h-10 rounded-full bg-slate-950/90 text-amber-300 font-black text-xl flex items-center justify-center border-2 border-amber-300">
+              <span className="w-11 h-11 rounded-full bg-[#FFF9EC] text-[#3A2314] font-display font-bold text-xl flex items-center justify-center border-[3px] border-[#3A2314] shadow-[0_3px_0_#3A2314]">
                 {idx + 1}°
               </span>
 
               <button
                 type="button"
                 onClick={() => handleCardTap(idx)}
-                className="flex-1 w-full flex flex-col items-center justify-center gap-2 py-2 cursor-pointer"
+                className="flex-1 w-full flex flex-col items-center justify-center gap-2.5 py-2 cursor-pointer"
               >
-                <span className="text-2xl font-black text-white drop-shadow">{item.label}</span>
-                <span className="px-3 py-1.5 rounded-xl bg-slate-950/85 text-amber-100 font-extrabold text-xl md:text-2xl">
+                <span className="font-display text-2xl font-bold text-white drop-shadow-[0_2px_0_#3A2314]">
+                  {item.label}
+                </span>
+                <span className="px-3.5 py-2 rounded-2xl bg-[#FFF9EC] border-[3px] border-[#3A2314] text-[#2B190E] font-extrabold text-xl md:text-2xl shadow-[0_3px_0_rgba(58,35,20,0.3)]">
                   {item.timeExpression}
                 </span>
               </button>
@@ -532,7 +612,7 @@ function OrderBoard({ config, onSolve, onMistake }: PuzzleEngineProps<LogicOrder
                   type="button"
                   disabled={idx === 0}
                   onClick={() => moveItem(idx, idx - 1)}
-                  className="min-h-14 min-w-14 flex-1 rounded-xl bg-slate-950/90 border-2 border-amber-300/80 text-white flex items-center justify-center disabled:opacity-35 active:scale-95 cursor-pointer"
+                  className="btn-3d btn-3d-cream min-h-13 min-w-12 flex-1 rounded-xl flex items-center justify-center cursor-pointer"
                   aria-label={`Sposta ${item.label} a sinistra`}
                 >
                   <ArrowLeft className="w-6 h-6" />
@@ -541,7 +621,7 @@ function OrderBoard({ config, onSolve, onMistake }: PuzzleEngineProps<LogicOrder
                   type="button"
                   disabled={idx === orderIds.length - 1}
                   onClick={() => moveItem(idx, idx + 1)}
-                  className="min-h-14 min-w-14 flex-1 rounded-xl bg-slate-950/90 border-2 border-amber-300/80 text-white flex items-center justify-center disabled:opacity-35 active:scale-95 cursor-pointer"
+                  className="btn-3d btn-3d-cream min-h-13 min-w-12 flex-1 rounded-xl flex items-center justify-center cursor-pointer"
                   aria-label={`Sposta ${item.label} a destra`}
                 >
                   <ArrowRight className="w-6 h-6" />
@@ -553,15 +633,15 @@ function OrderBoard({ config, onSolve, onMistake }: PuzzleEngineProps<LogicOrder
       </div>
 
       {/* Conferma in basso */}
-      <div className="shrink-0 max-w-5xl mx-auto w-full flex items-center justify-between gap-3">
-        <span className="text-lg md:text-xl font-bold text-amber-100 bg-slate-900/90 border border-amber-400/60 rounded-xl px-4 py-2">
+      <div className="shrink-0 max-w-5xl mx-auto w-full flex flex-wrap items-center justify-between gap-3">
+        <span className="storybook-panel rounded-2xl px-4 py-2 text-base md:text-xl font-extrabold text-[#2B190E]">
           Più BREVE a sinistra → Più LUNGO a destra
         </span>
 
         <button
           type="button"
           onClick={handleConfirm}
-          className="min-h-14 px-9 rounded-2xl bg-emerald-400 text-slate-950 font-black text-xl md:text-2xl flex items-center gap-2 shadow-lg active:scale-95 cursor-pointer"
+          className="btn-3d btn-3d-green min-h-14 px-9 rounded-2xl font-bold text-xl md:text-2xl flex items-center gap-2 cursor-pointer ml-auto"
         >
           <CheckCircle2 className="w-6 h-6" />
           <span>Conferma Ordine</span>
