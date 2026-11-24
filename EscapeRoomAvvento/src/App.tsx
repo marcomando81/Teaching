@@ -12,6 +12,7 @@ import { TeacherPanel } from './components/layout/TeacherPanel';
 import { BrassDoorTransition } from './components/layout/BrassDoorTransition';
 import { AmbientParticles } from './components/theater/AmbientParticles';
 import { IntroTrailer } from './components/theater/IntroTrailer';
+import { EpilogueTrailer } from './components/theater/EpilogueTrailer';
 import { StoryTheater } from './components/theater/StoryTheater';
 import { RewardOverlay } from './components/theater/RewardOverlay';
 import { TitleScreen } from './components/map/TitleScreen';
@@ -25,7 +26,7 @@ import {
   playHint,
   playTowerChime,
 } from './audio/soundEngine';
-import { unlockAndStartMusic } from './audio/christmasMusic';
+import { setMusicTrack, unlockAndStartMusic } from './audio/christmasMusic';
 
 export default function App() {
   const currentView = useGameStore((s) => s.currentView);
@@ -52,6 +53,10 @@ export default function App() {
       window.removeEventListener('keydown', handleFirstInteraction);
     };
   }, []);
+
+  useEffect(() => {
+    setMusicTrack(currentView === 'grand_finale' ? 'jingle' : 'carol');
+  }, [currentView]);
 
   const transitionWithDoors = useCallback((action: () => void) => {
     playDoorSlide();
@@ -262,7 +267,10 @@ export default function App() {
 }
 
 function GrandFinaleCelebration({ onBackToMap }: { onBackToMap: () => void }) {
+  const [showEpilogue, setShowEpilogue] = useState(true);
+
   useEffect(() => {
+    if (showEpilogue) return;
     playTowerChime(12);
     const colors = ['#FFD859', '#E04248', '#22A85A', '#38BDF8', '#FFFFFF'];
     confetti({ particleCount: 140, spread: 100, origin: { y: 0.5 }, colors });
@@ -270,7 +278,11 @@ function GrandFinaleCelebration({ onBackToMap }: { onBackToMap: () => void }) {
       confetti({ particleCount: 100, spread: 120, origin: { y: 0.35 }, colors });
     }, 1100);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [showEpilogue]);
+
+  if (showEpilogue) {
+    return <EpilogueTrailer onFinish={() => setShowEpilogue(false)} />;
+  }
 
   return (
     <div className="relative h-screen w-screen overflow-hidden select-none bg-[#162646] flex flex-col items-center justify-between p-6 md:p-10 text-center">

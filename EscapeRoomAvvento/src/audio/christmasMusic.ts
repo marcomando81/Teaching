@@ -10,6 +10,8 @@
  * Zero file esterni, 100% offline-ready, volume discreto adatto alla LIM in classe.
  */
 
+export type MusicTrack = 'carol' | 'jingle';
+
 interface BellStep {
   /** Frequenza nota celesta/campana (0 = pausa) */
   bell?: number;
@@ -17,11 +19,11 @@ interface BellStep {
   bell2?: number;
   /** Accordo di violini/archi (array di frequenze) che parte su questo step */
   strings?: number[];
-  /** Durata dell'accordo di archi in beat (default 3 = 1 battuta in 3/4) */
+  /** Durata dell'accordo di archi in beat */
   stringBeats?: number;
   /** Campanelle/sonagli natalizi ritmici ('accent' sul battere, 'soft' sul levare) */
   sleigh?: 'accent' | 'soft';
-  /** Durata dello step in beat (3/4) */
+  /** Durata dello step in beat */
   beats: number;
 }
 
@@ -61,10 +63,12 @@ const CHORD = {
   EmSoft: [N.E3, N.B3, N.E4],
   EmFull: [N.E2, N.E3, N.G3, N.B3, N.E4],
   D: [N.D3, N.A3, N.D4, N.F4s],
+  D7: [N.D3, N.F3s, N.A3, N.C4],
   C: [N.C3, N.G3, N.C4, N.E4],
   B7: [N.B2, N.F3s, N.B3, N.D4s],
   Am: [N.A2, N.E3, N.A3, N.C4],
   G: [N.G2, N.D3, N.G3, N.B3],
+  GJoy: [N.G2, N.G3, N.B3, N.D4],
 };
 
 /** Helper: 1 battuta del classico ostinato 4 note (G - F# - G - E) in 3/4 */
@@ -143,10 +147,103 @@ const CAROL_SEQUENCE: BellStep[] = [
   { bell: 0, beats: 3.0 },
 ];
 
-const BPM = 136;
-const SECONDS_PER_BEAT = 60 / BPM;
+// "Jingle Bells" festoso in Sol maggiore (4/4) per l'Epilogo e il Gran Finale
+const JINGLE_BELLS_SEQUENCE: BellStep[] = [
+  // Battuta 1: B4 B4 B4- (Jingle bells)
+  { bell: N.B4, bell2: N.G4, strings: CHORD.GJoy, stringBeats: 4, sleigh: 'accent', beats: 1.0 },
+  { bell: N.B4, sleigh: 'soft', beats: 1.0 },
+  { bell: N.B4, sleigh: 'accent', beats: 2.0 },
+
+  // Battuta 2: B4 B4 B4- (Jingle bells)
+  { bell: N.B4, bell2: N.G4, strings: CHORD.GJoy, stringBeats: 4, sleigh: 'accent', beats: 1.0 },
+  { bell: N.B4, sleigh: 'soft', beats: 1.0 },
+  { bell: N.B4, sleigh: 'accent', beats: 2.0 },
+
+  // Battuta 3: B4 D5 G4. A4 (Jingle all the)
+  { bell: N.B4, strings: CHORD.GJoy, stringBeats: 4, sleigh: 'accent', beats: 1.0 },
+  { bell: N.D5, sleigh: 'soft', beats: 1.0 },
+  { bell: N.G4, sleigh: 'accent', beats: 1.5 },
+  { bell: N.A4, beats: 0.5 },
+
+  // Battuta 4: B4--- (way!)
+  { bell: N.B4, bell2: N.D5, strings: CHORD.GJoy, stringBeats: 4, sleigh: 'accent', beats: 2.0 },
+  { bell: 0, sleigh: 'soft', beats: 2.0 },
+
+  // Battuta 5: C5 C5 C5. C5 (Oh what fun it)
+  { bell: N.C5, bell2: N.G4, strings: CHORD.C, stringBeats: 4, sleigh: 'accent', beats: 1.0 },
+  { bell: N.C5, sleigh: 'soft', beats: 1.0 },
+  { bell: N.C5, sleigh: 'accent', beats: 1.5 },
+  { bell: N.C5, beats: 0.5 },
+
+  // Battuta 6: C5 B4 B4 B4/B4 (is to ride in a)
+  { bell: N.C5, strings: CHORD.GJoy, stringBeats: 4, sleigh: 'accent', beats: 1.0 },
+  { bell: N.B4, sleigh: 'soft', beats: 1.0 },
+  { bell: N.B4, sleigh: 'accent', beats: 1.0 },
+  { bell: N.B4, beats: 0.5 },
+  { bell: N.B4, beats: 0.5 },
+
+  // Battuta 7: B4 A4 A4 B4 (one-horse open)
+  { bell: N.B4, strings: CHORD.Am, stringBeats: 4, sleigh: 'accent', beats: 1.0 },
+  { bell: N.A4, sleigh: 'soft', beats: 1.0 },
+  { bell: N.A4, sleigh: 'accent', beats: 1.0 },
+  { bell: N.B4, sleigh: 'soft', beats: 1.0 },
+
+  // Battuta 8: A4-- D5-- (sleigh, hey!)
+  { bell: N.A4, strings: CHORD.D7, stringBeats: 4, sleigh: 'accent', beats: 2.0 },
+  { bell: N.D5, bell2: N.F4s, sleigh: 'accent', beats: 2.0 },
+
+  // Battuta 9: B4 B4 B4- (Jingle bells)
+  { bell: N.B4, bell2: N.G4, strings: CHORD.GJoy, stringBeats: 4, sleigh: 'accent', beats: 1.0 },
+  { bell: N.B4, sleigh: 'soft', beats: 1.0 },
+  { bell: N.B4, sleigh: 'accent', beats: 2.0 },
+
+  // Battuta 10: B4 B4 B4- (Jingle bells)
+  { bell: N.B4, bell2: N.G4, strings: CHORD.GJoy, stringBeats: 4, sleigh: 'accent', beats: 1.0 },
+  { bell: N.B4, sleigh: 'soft', beats: 1.0 },
+  { bell: N.B4, sleigh: 'accent', beats: 2.0 },
+
+  // Battuta 11: B4 D5 G4. A4 (Jingle all the)
+  { bell: N.B4, strings: CHORD.GJoy, stringBeats: 4, sleigh: 'accent', beats: 1.0 },
+  { bell: N.D5, sleigh: 'soft', beats: 1.0 },
+  { bell: N.G4, sleigh: 'accent', beats: 1.5 },
+  { bell: N.A4, beats: 0.5 },
+
+  // Battuta 12: B4--- (way!)
+  { bell: N.B4, bell2: N.D5, strings: CHORD.GJoy, stringBeats: 4, sleigh: 'accent', beats: 2.0 },
+  { bell: 0, sleigh: 'soft', beats: 2.0 },
+
+  // Battuta 13: C5 C5 C5. C5 (Oh what fun it)
+  { bell: N.C5, bell2: N.G4, strings: CHORD.C, stringBeats: 4, sleigh: 'accent', beats: 1.0 },
+  { bell: N.C5, sleigh: 'soft', beats: 1.0 },
+  { bell: N.C5, sleigh: 'accent', beats: 1.5 },
+  { bell: N.C5, beats: 0.5 },
+
+  // Battuta 14: C5 B4 B4 B4/B4 (is to ride in a)
+  { bell: N.C5, strings: CHORD.GJoy, stringBeats: 4, sleigh: 'accent', beats: 1.0 },
+  { bell: N.B4, sleigh: 'soft', beats: 1.0 },
+  { bell: N.B4, sleigh: 'accent', beats: 1.0 },
+  { bell: N.B4, beats: 0.5 },
+  { bell: N.B4, beats: 0.5 },
+
+  // Battuta 15: D5 D5 C5 A4 (one-horse open)
+  { bell: N.D5, bell2: N.F4s, strings: CHORD.D7, stringBeats: 4, sleigh: 'accent', beats: 1.0 },
+  { bell: N.D5, sleigh: 'soft', beats: 1.0 },
+  { bell: N.C5, sleigh: 'accent', beats: 1.0 },
+  { bell: N.A4, sleigh: 'soft', beats: 1.0 },
+
+  // Battuta 16: G4--- (sleigh!)
+  { bell: N.G4, bell2: N.G5, strings: CHORD.GJoy, stringBeats: 4, sleigh: 'accent', beats: 3.0 },
+  { bell: 0, sleigh: 'soft', beats: 1.0 },
+];
+
+const TRACK_CONFIG: Record<MusicTrack, { sequence: BellStep[]; bpm: number }> = {
+  carol: { sequence: CAROL_SEQUENCE, bpm: 136 },
+  jingle: { sequence: JINGLE_BELLS_SEQUENCE, bpm: 144 },
+};
+
 const MASTER_VOLUME = 0.13;
 
+let currentTrack: MusicTrack = 'carol';
 let musicCtx: AudioContext | null = null;
 let masterGain: GainNode | null = null;
 let bellBus: GainNode | null = null;
@@ -357,10 +454,13 @@ function scheduleSleighBell(ctx: AudioContext, time: number, accent: boolean): v
 function runScheduler(): void {
   if (!musicCtx || !isPlaying || !musicEnabled) return;
 
+  const { sequence, bpm } = TRACK_CONFIG[currentTrack];
+  const secondsPerBeat = 60 / bpm;
+
   const lookAheadSec = 0.25;
   while (nextNoteTime < musicCtx.currentTime + lookAheadSec) {
-    const event = CAROL_SEQUENCE[stepIndex];
-    const durationSec = event.beats * SECONDS_PER_BEAT;
+    const event = sequence[stepIndex % sequence.length];
+    const durationSec = event.beats * secondsPerBeat;
 
     if (event.bell && event.bell > 0) {
       scheduleBellNote(musicCtx, event.bell, nextNoteTime, durationSec, 1);
@@ -369,7 +469,7 @@ function runScheduler(): void {
       scheduleBellNote(musicCtx, event.bell2, nextNoteTime, durationSec * 1.4, 0.65);
     }
     if (event.strings && event.strings.length > 0) {
-      const strDur = (event.stringBeats ?? 3) * SECONDS_PER_BEAT;
+      const strDur = (event.stringBeats ?? 3) * secondsPerBeat;
       scheduleStringChord(musicCtx, event.strings, nextNoteTime, strDur);
     }
     if (event.sleigh) {
@@ -377,7 +477,7 @@ function runScheduler(): void {
     }
 
     nextNoteTime += durationSec;
-    stepIndex = (stepIndex + 1) % CAROL_SEQUENCE.length;
+    stepIndex = (stepIndex + 1) % sequence.length;
   }
 }
 
@@ -436,6 +536,20 @@ export function setMusicEnabled(enabled: boolean): void {
       });
   } else {
     startScheduler();
+  }
+}
+
+/**
+ * Cambia la traccia musicale attiva ('carol' durante il gioco, 'jingle' nel Gran Finale).
+ * Se la musica è in riproduzione, riparte subito dal primo beat della nuova traccia.
+ */
+export function setMusicTrack(track: MusicTrack): void {
+  if (currentTrack === track) return;
+  currentTrack = track;
+  stepIndex = 0;
+
+  if (isPlaying && musicCtx) {
+    nextNoteTime = musicCtx.currentTime + 0.12;
   }
 }
 
