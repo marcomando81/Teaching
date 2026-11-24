@@ -52,6 +52,9 @@ orologio-fermo/
 │   ├── STORY_AND_PUZZLES.md
 │   ├── ASSETS_MANIFEST.md
 │   └── ARCHITECTURE.md
+├── scripts/
+│   └── deploy.ps1                # Build, zip di dist/ e upload su server Deway
+├── .env.example                  # Template variabili per il deploy (.env è gitignored)
 ├── public/
 │   └── assets/
 │       ├── backgrounds/          # 5 sfondi .webp
@@ -387,3 +390,32 @@ Nessun file audio da scaricare. Gestisce il risveglio automatico di `AudioContex
 * `playHint()`: tintinnio morbido cristallino (apertura indizio).
 * `playSuccess()`: arpeggio maggiore brillante a 4 note (risoluzione stazione).
 * `playTowerChime(count)`: rintocco di campana metallica FM (sintesi inarmonica) ripetuto per il Gran Finale della Stazione 13.
+
+---
+
+## 7. Build e Deploy
+
+L'app è configurata in `vite.config.ts` con `base: '/scuola/escaperoom/'` (inclusi `id`, `start_url` e `scope` del manifest PWA).
+
+### Configurazione `.env`
+
+Copia `.env.example` in `.env` (file escluso da Git in `.gitignore`, **non committare mai l'API Key**) e imposta:
+
+```env
+DEWAY_API_KEY=<admin-api-key>
+DEWAY_UPLOAD_URL=https://deway.it/main/api/Files/Upload
+DEWAY_DEPLOY_PATH=scuola/escaperoom
+```
+
+### Comandi di deploy
+
+Lo script PowerShell `scripts/deploy.ps1` esegue la build (`npm run build`), crea un archivio `.zip` temporaneo con il contenuto di `dist/` (con separatori `/` compatibili Linux) e lo carica tramite `POST /api/Files/Upload` (`IsZip=true`, auth `Bearer`).
+
+```powershell
+# Build completa + deploy su scuola/escaperoom
+npm run deploy
+
+# Solo upload della cartella dist/ già compilata
+npm run deploy -- -SkipBuild
+```
+
