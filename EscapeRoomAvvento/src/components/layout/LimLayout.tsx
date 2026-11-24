@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
-import { Clock, Map as MapIcon, Maximize2, Minimize2, Volume2, VolumeX } from 'lucide-react';
+import { Clock, Map as MapIcon, Maximize2, Minimize2, Music, Volume2, VolumeX } from 'lucide-react';
 import { useGameStore } from '../../store/useGameStore';
 import { playClick } from '../../audio/soundEngine';
 
@@ -26,6 +26,8 @@ export function LimLayout({
 }: LimLayoutProps) {
   const soundEnabled = useGameStore((s) => s.soundEnabled);
   const toggleSound = useGameStore((s) => s.toggleSound);
+  const musicEnabled = useGameStore((s) => s.musicEnabled);
+  const toggleMusic = useGameStore((s) => s.toggleMusic);
 
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
@@ -124,11 +126,33 @@ export function LimLayout({
           <button
             type="button"
             onClick={() => {
+              playClick();
+              toggleMusic();
+            }}
+            className="btn-3d btn-3d-wood relative min-h-12 min-w-12 rounded-2xl flex items-center justify-center cursor-pointer"
+            aria-label={musicEnabled ? 'Disattiva musica natalizia' : 'Attiva musica natalizia'}
+            title={musicEnabled ? 'Disattiva musica natalizia' : 'Attiva musica natalizia'}
+          >
+            <Music
+              className={`w-6 h-6 ${musicEnabled ? 'text-[#FFE38E]' : 'text-[#FF8C8E] opacity-75'}`}
+            />
+            {!musicEnabled && (
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute w-7 h-0.5 bg-[#FF8C8E] -rotate-45 rounded-full"
+              />
+            )}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
               toggleSound();
               playClick();
             }}
             className="btn-3d btn-3d-wood min-h-12 min-w-12 rounded-2xl flex items-center justify-center cursor-pointer"
-            aria-label={soundEnabled ? 'Disattiva audio' : 'Attiva audio'}
+            aria-label={soundEnabled ? 'Disattiva effetti sonori' : 'Attiva effetti sonori'}
+            title={soundEnabled ? 'Disattiva effetti sonori' : 'Attiva effetti sonori'}
           >
             {soundEnabled ? (
               <Volume2 className="w-6 h-6 text-[#FFE38E]" />

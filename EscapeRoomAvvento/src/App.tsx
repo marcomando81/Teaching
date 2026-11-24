@@ -11,6 +11,7 @@ import { HintModal } from './components/layout/HintModal';
 import { TeacherPanel } from './components/layout/TeacherPanel';
 import { BrassDoorTransition } from './components/layout/BrassDoorTransition';
 import { AmbientParticles } from './components/theater/AmbientParticles';
+import { IntroTrailer } from './components/theater/IntroTrailer';
 import { StoryTheater } from './components/theater/StoryTheater';
 import { RewardOverlay } from './components/theater/RewardOverlay';
 import { TitleScreen } from './components/map/TitleScreen';
@@ -24,6 +25,7 @@ import {
   playHint,
   playTowerChime,
 } from './audio/soundEngine';
+import { unlockAndStartMusic } from './audio/christmasMusic';
 
 export default function App() {
   const currentView = useGameStore((s) => s.currentView);
@@ -38,6 +40,18 @@ export default function App() {
   const [hintModalOpen, setHintModalOpen] = useState(false);
   const [teacherPanelOpen, setTeacherPanelOpen] = useState(false);
   const [mistakeFeedback, setMistakeFeedback] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleFirstInteraction = () => {
+      unlockAndStartMusic();
+    };
+    window.addEventListener('pointerdown', handleFirstInteraction, { once: true });
+    window.addEventListener('keydown', handleFirstInteraction, { once: true });
+    return () => {
+      window.removeEventListener('pointerdown', handleFirstInteraction);
+      window.removeEventListener('keydown', handleFirstInteraction);
+    };
+  }, []);
 
   const transitionWithDoors = useCallback((action: () => void) => {
     playDoorSlide();
@@ -94,7 +108,11 @@ export default function App() {
       <BrassDoorTransition isClosed={doorsClosed} />
 
       {currentView === 'title' && (
-        <TitleScreen onStart={() => transitionWithDoors(() => setView('map'))} />
+        <TitleScreen onStart={() => transitionWithDoors(() => setView('intro_trailer'))} />
+      )}
+
+      {currentView === 'intro_trailer' && (
+        <IntroTrailer onFinish={() => transitionWithDoors(() => setView('map'))} />
       )}
 
       {currentView === 'map' && (

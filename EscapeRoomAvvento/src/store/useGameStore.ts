@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import type { ScreenView, StationId, StationPhase } from '../types/game';
 import { INVENTORY_ITEMS, getRewardItemForStation } from '../data/items';
 import { setSoundEnabled as syncAudioEngine } from '../audio/soundEngine';
+import { setMusicEnabled as syncMusicEngine } from '../audio/christmasMusic';
 
 const ALL_STATIONS: StationId[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
@@ -16,6 +17,7 @@ export interface GameState {
   completedStations: StationId[];
   inventoryIds: string[];
   soundEnabled: boolean;
+  musicEnabled: boolean;
   teacherUnlockedAll: boolean;
 
   // Campi effimeri (non persistiti)
@@ -33,6 +35,7 @@ export interface GameState {
 
   // Audio e opzioni
   toggleSound: () => void;
+  toggleMusic: () => void;
   setTeacherUnlockedAll: (enabled: boolean) => void;
 
   // Paracadute anti-reset PC scolastico
@@ -50,6 +53,7 @@ export const useGameStore = create<GameState>()(
       completedStations: [],
       inventoryIds: [],
       soundEnabled: true,
+      musicEnabled: true,
       teacherUnlockedAll: false,
 
       // Stato iniziale effimero
@@ -104,6 +108,13 @@ export const useGameStore = create<GameState>()(
           const next = !state.soundEnabled;
           syncAudioEngine(next);
           return { soundEnabled: next };
+        }),
+
+      toggleMusic: () =>
+        set((state) => {
+          const next = !state.musicEnabled;
+          syncMusicEngine(next);
+          return { musicEnabled: next };
         }),
 
       setTeacherUnlockedAll: (enabled) => set({ teacherUnlockedAll: enabled }),
@@ -176,11 +187,13 @@ export const useGameStore = create<GameState>()(
         completedStations: state.completedStations,
         inventoryIds: state.inventoryIds,
         soundEnabled: state.soundEnabled,
+        musicEnabled: state.musicEnabled,
         teacherUnlockedAll: state.teacherUnlockedAll,
       }),
       onRehydrateStorage: () => (state) => {
         if (state) {
           syncAudioEngine(state.soundEnabled);
+          syncMusicEngine(state.musicEnabled ?? true);
         }
       },
     }

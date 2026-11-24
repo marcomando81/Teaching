@@ -1,6 +1,6 @@
 export type ActId = 1 | 2 | 3 | 4;
 export type StationId = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13;
-export type ScreenView = 'title' | 'map' | 'station' | 'grand_finale';
+export type ScreenView = 'title' | 'intro_trailer' | 'map' | 'station' | 'grand_finale';
 export type StationPhase = 'intro' | 'puzzle' | 'outro' | 'reward';
 export type OwlExpression = 'mysterious' | 'thinking' | 'celebrating';
 
