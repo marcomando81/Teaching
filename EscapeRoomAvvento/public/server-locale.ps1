@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Stop'
 
 $root = [System.IO.Path]::GetFullPath($PSScriptRoot)
-$basePath = '/scuola/escaperoom'
+$basePath = '/apps/scuola/escaperoom'
 
 $mimeTypes = @{
   '.html'        = 'text/html; charset=utf-8'
